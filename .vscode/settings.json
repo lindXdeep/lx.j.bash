@@ -1,7 +1,15 @@
 {
+  "files.exclude": {
+    "LICENSE": true,
+  },
+  
   "java.project.sourcePaths": [
     "src/test/java",
     "src/main/java",
     "src/main/resources"
+  ],
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "~/dev-libs/junit/5/junit-platform-console-standalone-1.8.2.jar"
   ]
 }
