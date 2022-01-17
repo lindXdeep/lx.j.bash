@@ -1,6 +1,11 @@
 {
   "files.exclude": {
     "LICENSE": true,
+    "bin/": true,
+    "lib/": true,
+    "log/": true,
+    ".gitignore": true,
+    "makefile": true,
   },
   
   "java.project.sourcePaths": [
