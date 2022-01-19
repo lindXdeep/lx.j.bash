@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Configuration>
   <Appenders>
-    <File name="debug_log_file" fileName="./log/debug.log">
+    <File name="error_log_file" fileName="./log/error.log">
       <PatternLayout>
         <Pattern>
           %-5p %d{yyyy-MM-dd HH:mm:ss} [%F:%L] %C [%t]%ex - %m%n
@@ -10,14 +10,14 @@
     </File>
 
     <Console name="stdout" target="SYSTEM_OUT">
-      <PatternLayout pattern="%-5p %d{yyyy-MM-dd} [%t] %C (%F:%L) - %m%n" />
+      <PatternLayout pattern="%n%-5p %d{yyyy-MM-dd} [%t] %C - %m%n" />
     </Console>
 
   </Appenders>
   <Loggers>
     <Root level="trace">
       <AppenderRef ref="stdout" level="DEBUG"></AppenderRef>
-      <AppenderRef ref="debug_log_file" level="ERROR"></AppenderRef>
+      <AppenderRef ref="error_log_file" level="ERROR"></AppenderRef>
     </Root>
   </Loggers>
 </Configuration>

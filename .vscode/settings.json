@@ -3,7 +3,7 @@
     "LICENSE": true,
     "bin/": true,
     "lib/": true,
-    "log/": true,
+    "log/": false,
     ".gitignore": true,
     "makefile": true,
   },

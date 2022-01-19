@@ -4,9 +4,8 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.Reader;
 
-/**
- * App
- */
+import lx.lindx.bash.sys.Tty;
+
 public class App {
 
   private static Console console;
@@ -14,31 +13,70 @@ public class App {
 
   public static void main(String[] args) throws InterruptedException, IOException {
 
-    String[] raw = { "/bin/sh", "-c", "stty raw < /dev/tty" };
-    String[] sane = { "/bin/sh", "-c", "stty sane < /dev/tty" };
+    System.out.println("starrt");
 
-    Runtime.getRuntime().exec(raw).waitFor();
+    Shell sh = new Shell();
+   
+    Thread th = new Thread(sh);
+    
+    th.start();
+    
+  
 
-    console = System.console();
-    reader = console.reader();
+   System.out.println("stop");
 
-    char ch;
+  
 
-    while (true) {
 
-      ch = (char) reader.read();
+   
+    // Tty.raw();
 
-      if ('q' == ch) {
-        Runtime.getRuntime().exec(sane).waitFor();
-        System.exit(0);
-      } else if ('w' == ch) {
-        System.out.print("orked!");
-      } else if ('\t' == ch) {
-        System.out.println("\n\rsome else \r");
-        System.out.println("some else \r");
-        System.out.println("some else \r");
-        System.out.print("\rlast result");
-      }
-    }
+    // console = System.console();
+    // reader = console.reader();
+
+    // int ch;
+
+    // while (true) {
+
+    //   ch = reader.read();
+
+    //   if (String.valueOf((char) ch).matches("[a-zA-Z0-9а-яА-я]")) {
+    //     System.out.print((char) ch);
+    //   }
+
+    //   if ((int) 'q' == ch) {
+    //     Tty.sane();
+    //     System.exit(0);
+    //   } else if ((int) 'w' == ch) {
+    //     System.out.print("orked!");
+    //   } else if (ch == 13) {
+    //     System.out.print("\n\rEnter");
+    //   } /*
+    //      * else if ((int) ch == 127) {
+    //      * System.out.print("Back Space");
+    //      * }
+    //      */ else if (9 == (int) ch) {
+    //     System.out.println("\n\rsome else \r");
+    //     System.out.println("some else \r");
+    //     System.out.println("some else \r");
+    //     System.out.print("\rlast result");
+    //   } /*
+    //      * else if (27 == (int) ch) {
+    //      * System.out.println((char) ch);
+    //      * }
+    //      */ else if (127 == ch) {
+    //     System.out.print('\b' + "\033[K");
+    //   } else if ('f' == (char) ch) {
+    //     for (char i = 'а'; i < 'я'; i++) {
+    //       System.out.print(i + " ");
+    //     }
+    //     for (char i = 'А'; i < 'Я'; i++) {
+    //       System.out.print(i + " ");
+    //     }
+    //     for (char i = '!'; i < '?'; i++) {
+    //       System.out.print(i + " ");
+    //     }
+    //   }
+    // }
   }
 }

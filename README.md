@@ -1,5 +1,8 @@
 # Упрощенный эмулятор bash
 
+![Code Time](https://img.shields.io/endpoint?style=flat&url=https://codetime-api.datreks.com/badge/870?logoColor=white%26project=lx.j.bash%26recentMS=0%26showProject=false)
+
+
 Написать упрощенный эмулятор bash (эмулятор командной строки), который понимает несколько команд с возможностью их комбинирования
 
 ## Требования к программе
