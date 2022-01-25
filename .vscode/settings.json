@@ -3,9 +3,10 @@
     "LICENSE": true,
     "bin/": true,
     "lib/": true,
-    "log/": false,
+    "log/": true,
     ".gitignore": true,
     "makefile": true,
+    "src/test": true,
   },
   
   "java.project.sourcePaths": [

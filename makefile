@@ -17,6 +17,9 @@ clean:
 compile: clean
 	javac -d out/ -cp .:lib/* -sourcepath src/ src/main/**/*.java
 
+compile-jdk8: clean
+	${JDK8_HOME}/bin/javac -d out/ -cp .:lib/* -sourcepath src/ src/main/**/*.java
+
 # ----- TEST ----- #
 
 test: compile
@@ -27,14 +30,24 @@ test: compile
 
 jar:
 	cp src/main/resources/* out/
-	jar cvfe bin/app.jar lx.lindx.example.App -C out/ .
+	jar cvfe bin/app.jar lx.lindx.bash.App -C out/ .
 
 package: compile jar
+
+jar-jdk8:
+	cp src/main/resources/* out/
+	${JDK8_HOME}/bin/jar cvfe bin/app.jar lx.lindx.bash.App -C out/ .
+
+package-jdk8: compile-jdk8 jar-jdk8
 
 # ----- RUN MAIN----- #
 
 run:
 	java -cp .:out/:lib/*:src/main/resources lx.lindx.bash.App
+
+run-jdk8:
+	${JDK8_HOME}/bin/java -cp .:out/:lib/*:src/main/resources lx.lindx.bash.App
+	
 
 # ----- EXECUTE JAR ----- #
 
@@ -43,4 +56,4 @@ execute:
 
 # ----- DEFAUL GOAL----- #
 
-compile-run: compile run
+compile-run: compile-jdk8 run
