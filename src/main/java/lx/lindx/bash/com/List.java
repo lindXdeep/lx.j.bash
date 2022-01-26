@@ -24,17 +24,10 @@ public class List {
 
   public void show(final String path) {
 
-    Path[] paths = getDirectories(path);
+    Set<Path> paths = getDirectories(path);
 
-    int files = paths.length;
-    int cols = columns / maxFileNameLength;
-    int rows = (files / cols) + 1;
-
-    for (int i = 0; i < rows; i++) {
-      for (int j = i; j < paths.length; j = j + rows) {
-        System.out.printf(("%-" + (maxFileNameLength)).concat("s "), paths[j] + "");
-      }
-      System.out.println();
+    for (Path path2 : paths) {
+      System.out.println(path2);
     }
 
     getLogger().info("Columns: " + columns + ",\t" +
@@ -42,7 +35,7 @@ public class List {
         "Cols: " + cols + "/ Rows: " + rows);
   }
 
-  private Path[] getDirectories(final String path) {
+  private Set<Path> getDirectories(final String path) {
 
     Path dirSrc = Paths.get(path);
     Set<Path> dirs = new TreeSet<>(new ComparatorIgnoreSpecialChars());
@@ -67,7 +60,7 @@ public class List {
       Path[] resultsDir = new Path[dirs.size()];
       dirs.toArray(resultsDir);
 
-      return resultsDir;
+      return dirs;
     }
     return null;
   }
