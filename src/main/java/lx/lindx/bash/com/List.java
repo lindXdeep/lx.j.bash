@@ -5,6 +5,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -31,7 +32,7 @@ public class List {
 
     for (int i = 0; i < rows; i++) {
       for (int j = i; j < paths.length; j = j + rows) {
-        System.out.printf(("%-" + (maxFileNameLength)).concat("s "), paths[j] + "/");
+        System.out.printf(("%-" + (maxFileNameLength)).concat("s "), paths[j] + "");
       }
       System.out.println();
     }
@@ -44,8 +45,7 @@ public class List {
   private Path[] getDirectories(final String path) {
 
     Path dirSrc = Paths.get(path);
-    Set<Path> dirsFirst = new TreeSet<>();
-    Set<Path> dirsLast = new TreeSet<>();
+    Set<Path> dirs = new TreeSet<>(new ComparatorIgnoreSpecialChars());
 
     if (Files.exists(dirSrc) && Files.isDirectory(dirSrc)) {
       try (DirectoryStream<Path> dir = Files.newDirectoryStream(dirSrc)) {
@@ -55,21 +55,17 @@ public class List {
 
           maxFileNameLength = f.length() > maxFileNameLength ? f.length() : maxFileNameLength;
 
-          String tmpStr = p.toString().replace(sptr, "");
-
-          if (tmpStr.matches("^[a-zA-Z0-9]+$"))
-            dirsFirst.add(Paths.get(tmpStr));
-          else
-            dirsLast.add(Paths.get(tmpStr));
+      
+          dirs.add(p);
 
         }
       } catch (IOException e) {
         e.printStackTrace();
       }
 
-      Path[] resultsDir = new Path[dirsFirst.size() + dirsLast.size()];
-      dirsFirst.toArray(resultsDir);
-      System.arraycopy(dirsLast.toArray(), 0, resultsDir, (resultsDir.length - dirsLast.size()), dirsLast.size());
+     
+      Path[] resultsDir = new Path[dirs.size()];
+      dirs.toArray(resultsDir);
 
       return resultsDir;
     }
