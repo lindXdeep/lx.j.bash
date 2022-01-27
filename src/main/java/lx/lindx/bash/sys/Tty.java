@@ -40,6 +40,8 @@ public class Tty {
       stty(echo);
       stty(icanon);
 
+      
+
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
