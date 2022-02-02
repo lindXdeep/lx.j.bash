@@ -87,31 +87,31 @@ public class Shell implements Runnable {
 
         } else if (key.equals(KEY_BACKSPACE.name())) {
 
-          if (bufPos > 0 && bufPos < lineLength) {
+          if (bufPos > 0 && bufPos <= lineLength) {
 
-            buffer.deleteCharAt(--bufPos);
+            buffer.deleteCharAt(bufPos - 1);
+            print('\b', ' ');
 
-            print('\b', buffer.charAt(bufPos));
-
-            buffer.append(' ');
-            print(buffer.substring(bufPos + 1));
-
-            col--;
             lineLength--;
-          }
-          if (bufPos > 0 && bufPos == lineLength) {
-            buffer.deleteCharAt(--bufPos);
-            col--;
-           
-          }
-          if (col < 1 && row > 1) {
-            row--;
-            col = sysCol;
-            move(row, col);
-            print(buffer.substring(bufPos));
-          }
+            bufPos--;
 
-         
+            move(row, --col);
+
+            if (col < 1 && row > 1) {
+
+              move(--row, col = sysCol);
+              buffer.append(' ');
+              print(buffer.substring(bufPos));
+              buffer.setLength(lineLength);
+            }
+
+            if (bufPos < lineLength && col != sysCol) {
+
+              buffer.append(' ');
+              print(buffer.substring(bufPos));
+              buffer.setLength(lineLength);
+            }
+          }
 
         } else if (key.equals(KEY_F1.name())) {
           // System.out.print(EscSeq.KEY_F1);
@@ -161,26 +161,26 @@ public class Shell implements Runnable {
         } else if (key.equals(KEY_RIGHT.name())) {
 
           if (bufPos < lineLength) {
-            col++;
+            move(row, ++col);
             bufPos++;
           }
+
           if (col > sysCol) {
-            row++;
-            col = 1;
+            move(++row, col = 1);
           }
 
         } else if (key.equals(KEY_LEFT.name())) {
 
           if (bufPos > 0) {
-            col--;
+            move(row, --col);
             bufPos--;
           }
+
           if (col < 1 && row > 1) {
-            row--;
-            col = sysCol;
+            move(--row, col = sysCol);
           }
         }
-      
+
         move(row, col);
       }
 
@@ -195,15 +195,15 @@ public class Shell implements Runnable {
     lineLength = 0;
   }
 
-  private void move(int row, int col) {
-    print(String.format(MOV_CURR_R_C, row, col));
-  }
-
   public void сlearScreen() {
     print(CLS, CURR_UP_LEFT);
     Terminal.clear();
     row = 1;
     col = 1;
+  }
+
+  private void move(int row, int col) {
+    print(String.format(MOV_CURR_R_C, row, col));
   }
 
   private void print(final String... str) {
