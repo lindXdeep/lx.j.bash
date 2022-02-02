@@ -1,0 +1,184 @@
+[null         ] buf-pos:0 , buf-sz:0 , t-linelength:0 , t-row:1 , t-col:58, t-end:80, syscol:22
+[w            ] buf-pos:1 , buf-sz:1 , t-linelength:1 , t-row:1 , t-col:59, t-end:21, syscol:80
+[q            ] buf-pos:2 , buf-sz:2 , t-linelength:2 , t-row:1 , t-col:60, t-end:20, syscol:80
+[e            ] buf-pos:3 , buf-sz:3 , t-linelength:3 , t-row:1 , t-col:61, t-end:19, syscol:80
+[e            ] buf-pos:4 , buf-sz:4 , t-linelength:4 , t-row:1 , t-col:62, t-end:18, syscol:80
+[e            ] buf-pos:5 , buf-sz:5 , t-linelength:5 , t-row:1 , t-col:63, t-end:17, syscol:80
+[e            ] buf-pos:6 , buf-sz:6 , t-linelength:6 , t-row:1 , t-col:64, t-end:16, syscol:80
+[e            ] buf-pos:7 , buf-sz:7 , t-linelength:7 , t-row:1 , t-col:65, t-end:15, syscol:80
+[e            ] buf-pos:8 , buf-sz:8 , t-linelength:8 , t-row:1 , t-col:66, t-end:14, syscol:80
+[e            ] buf-pos:9 , buf-sz:9 , t-linelength:9 , t-row:1 , t-col:67, t-end:13, syscol:80
+[e            ] buf-pos:10, buf-sz:10, t-linelength:10, t-row:1 , t-col:68, t-end:12, syscol:80
+[e            ] buf-pos:11, buf-sz:11, t-linelength:11, t-row:1 , t-col:69, t-end:11, syscol:80
+[e            ] buf-pos:12, buf-sz:12, t-linelength:12, t-row:1 , t-col:70, t-end:10, syscol:80
+[e            ] buf-pos:13, buf-sz:13, t-linelength:13, t-row:1 , t-col:71, t-end:9 , syscol:80
+[e            ] buf-pos:14, buf-sz:14, t-linelength:14, t-row:1 , t-col:72, t-end:8 , syscol:80
+[e            ] buf-pos:15, buf-sz:15, t-linelength:15, t-row:1 , t-col:73, t-end:7 , syscol:80
+[e            ] buf-pos:16, buf-sz:16, t-linelength:16, t-row:1 , t-col:74, t-end:6 , syscol:80
+[e            ] buf-pos:17, buf-sz:17, t-linelength:17, t-row:1 , t-col:75, t-end:5 , syscol:80
+[e            ] buf-pos:18, buf-sz:18, t-linelength:18, t-row:1 , t-col:76, t-end:4 , syscol:80
+[e            ] buf-pos:19, buf-sz:19, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[e            ] buf-pos:20, buf-sz:20, t-linelength:20, t-row:1 , t-col:78, t-end:2 , syscol:80
+[e            ] buf-pos:21, buf-sz:21, t-linelength:21, t-row:1 , t-col:79, t-end:1 , syscol:80
+[e            ] buf-pos:22, buf-sz:22, t-linelength:22, t-row:1 , t-col:80, t-end:0 , syscol:80
+[e            ] buf-pos:23, buf-sz:23, t-linelength:23, t-row:2 , t-col:1 , t-end:79, syscol:80
+[e            ] buf-pos:24, buf-sz:24, t-linelength:24, t-row:2 , t-col:2 , t-end:78, syscol:80
+[e            ] buf-pos:25, buf-sz:25, t-linelength:25, t-row:2 , t-col:3 , t-end:77, syscol:80
+[e            ] buf-pos:26, buf-sz:26, t-linelength:26, t-row:2 , t-col:4 , t-end:76, syscol:80
+[e            ] buf-pos:27, buf-sz:27, t-linelength:27, t-row:2 , t-col:5 , t-end:75, syscol:80
+[e            ] buf-pos:28, buf-sz:28, t-linelength:28, t-row:2 , t-col:6 , t-end:74, syscol:80
+[e            ] buf-pos:29, buf-sz:29, t-linelength:29, t-row:2 , t-col:7 , t-end:73, syscol:80
+[KEY_LEFT     ] buf-pos:28, buf-sz:29, t-linelength:29, t-row:2 , t-col:6 , t-end:74, syscol:80
+[KEY_LEFT     ] buf-pos:27, buf-sz:29, t-linelength:29, t-row:2 , t-col:5 , t-end:75, syscol:80
+[KEY_LEFT     ] buf-pos:26, buf-sz:29, t-linelength:29, t-row:2 , t-col:4 , t-end:76, syscol:80
+[KEY_LEFT     ] buf-pos:25, buf-sz:29, t-linelength:29, t-row:2 , t-col:3 , t-end:77, syscol:80
+[KEY_LEFT     ] buf-pos:24, buf-sz:29, t-linelength:29, t-row:2 , t-col:2 , t-end:78, syscol:80
+[KEY_LEFT     ] buf-pos:23, buf-sz:29, t-linelength:29, t-row:2 , t-col:1 , t-end:79, syscol:80
+[1            ] buf-pos:24, buf-sz:30, t-linelength:30, t-row:2 , t-col:2 , t-end:78, syscol:80
+[2            ] buf-pos:25, buf-sz:31, t-linelength:31, t-row:2 , t-col:3 , t-end:77, syscol:80
+[3            ] buf-pos:26, buf-sz:32, t-linelength:32, t-row:2 , t-col:4 , t-end:76, syscol:80
+[4            ] buf-pos:27, buf-sz:33, t-linelength:33, t-row:2 , t-col:5 , t-end:75, syscol:80
+[5            ] buf-pos:28, buf-sz:34, t-linelength:34, t-row:2 , t-col:6 , t-end:74, syscol:80
+[KEY_LEFT     ] buf-pos:27, buf-sz:34, t-linelength:34, t-row:2 , t-col:5 , t-end:75, syscol:80
+[KEY_LEFT     ] buf-pos:26, buf-sz:34, t-linelength:34, t-row:2 , t-col:4 , t-end:76, syscol:80
+[KEY_LEFT     ] buf-pos:25, buf-sz:34, t-linelength:34, t-row:2 , t-col:3 , t-end:77, syscol:80
+[KEY_LEFT     ] buf-pos:24, buf-sz:34, t-linelength:34, t-row:2 , t-col:2 , t-end:78, syscol:80
+[KEY_LEFT     ] buf-pos:23, buf-sz:34, t-linelength:34, t-row:2 , t-col:1 , t-end:79, syscol:80
+[KEY_BACKSPACE] buf-pos:22, buf-sz:34, t-linelength:33, t-row:1 , t-col:80, t-end:0 , syscol:80
+[KEY_BACKSPACE] buf-pos:21, buf-sz:34, t-linelength:32, t-row:1 , t-col:79, t-end:1 , syscol:80
+[KEY_BACKSPACE] buf-pos:20, buf-sz:34, t-linelength:31, t-row:1 , t-col:78, t-end:2 , syscol:80
+[KEY_BACKSPACE] buf-pos:19, buf-sz:34, t-linelength:30, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_BACKSPACE] buf-pos:18, buf-sz:34, t-linelength:29, t-row:1 , t-col:76, t-end:4 , syscol:80
+[KEY_BACKSPACE] buf-pos:17, buf-sz:34, t-linelength:28, t-row:1 , t-col:75, t-end:5 , syscol:80
+[KEY_BACKSPACE] buf-pos:16, buf-sz:34, t-linelength:27, t-row:1 , t-col:74, t-end:6 , syscol:80
+[KEY_BACKSPACE] buf-pos:15, buf-sz:34, t-linelength:26, t-row:1 , t-col:73, t-end:7 , syscol:80
+[KEY_BACKSPACE] buf-pos:14, buf-sz:34, t-linelength:25, t-row:1 , t-col:72, t-end:8 , syscol:80
+[KEY_BACKSPACE] buf-pos:13, buf-sz:34, t-linelength:24, t-row:1 , t-col:71, t-end:9 , syscol:80
+[KEY_BACKSPACE] buf-pos:12, buf-sz:34, t-linelength:23, t-row:1 , t-col:70, t-end:10, syscol:80
+[KEY_BACKSPACE] buf-pos:11, buf-sz:34, t-linelength:22, t-row:1 , t-col:69, t-end:11, syscol:80
+[KEY_BACKSPACE] buf-pos:10, buf-sz:34, t-linelength:21, t-row:1 , t-col:68, t-end:12, syscol:80
+[KEY_BACKSPACE] buf-pos:9 , buf-sz:34, t-linelength:20, t-row:1 , t-col:67, t-end:13, syscol:80
+[KEY_BACKSPACE] buf-pos:8 , buf-sz:34, t-linelength:19, t-row:1 , t-col:66, t-end:14, syscol:80
+[KEY_RIGHT    ] buf-pos:9 , buf-sz:34, t-linelength:19, t-row:1 , t-col:67, t-end:13, syscol:80
+[KEY_RIGHT    ] buf-pos:10, buf-sz:34, t-linelength:19, t-row:1 , t-col:68, t-end:12, syscol:80
+[KEY_RIGHT    ] buf-pos:11, buf-sz:34, t-linelength:19, t-row:1 , t-col:69, t-end:11, syscol:80
+[KEY_RIGHT    ] buf-pos:12, buf-sz:34, t-linelength:19, t-row:1 , t-col:70, t-end:10, syscol:80
+[KEY_RIGHT    ] buf-pos:13, buf-sz:34, t-linelength:19, t-row:1 , t-col:71, t-end:9 , syscol:80
+[KEY_RIGHT    ] buf-pos:14, buf-sz:34, t-linelength:19, t-row:1 , t-col:72, t-end:8 , syscol:80
+[KEY_RIGHT    ] buf-pos:15, buf-sz:34, t-linelength:19, t-row:1 , t-col:73, t-end:7 , syscol:80
+[KEY_RIGHT    ] buf-pos:16, buf-sz:34, t-linelength:19, t-row:1 , t-col:74, t-end:6 , syscol:80
+[KEY_RIGHT    ] buf-pos:17, buf-sz:34, t-linelength:19, t-row:1 , t-col:75, t-end:5 , syscol:80
+[KEY_RIGHT    ] buf-pos:18, buf-sz:34, t-linelength:19, t-row:1 , t-col:76, t-end:4 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_RIGHT    ] buf-pos:19, buf-sz:34, t-linelength:19, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_BACKSPACE] buf-pos:18, buf-sz:33, t-linelength:19, t-row:1 , t-col:76, t-end:4 , syscol:80
+[KEY_BACKSPACE] buf-pos:17, buf-sz:33, t-linelength:18, t-row:1 , t-col:75, t-end:5 , syscol:80
+[KEY_BACKSPACE] buf-pos:16, buf-sz:33, t-linelength:17, t-row:1 , t-col:74, t-end:6 , syscol:80
+[KEY_BACKSPACE] buf-pos:15, buf-sz:33, t-linelength:16, t-row:1 , t-col:73, t-end:7 , syscol:80
+[KEY_BACKSPACE] buf-pos:14, buf-sz:33, t-linelength:15, t-row:1 , t-col:72, t-end:8 , syscol:80
+[KEY_BACKSPACE] buf-pos:13, buf-sz:33, t-linelength:14, t-row:1 , t-col:71, t-end:9 , syscol:80
+[KEY_BACKSPACE] buf-pos:12, buf-sz:33, t-linelength:13, t-row:1 , t-col:70, t-end:10, syscol:80
+[KEY_BACKSPACE] buf-pos:11, buf-sz:33, t-linelength:12, t-row:1 , t-col:69, t-end:11, syscol:80
+[KEY_BACKSPACE] buf-pos:10, buf-sz:33, t-linelength:11, t-row:1 , t-col:68, t-end:12, syscol:80
+[KEY_BACKSPACE] buf-pos:9 , buf-sz:33, t-linelength:10, t-row:1 , t-col:67, t-end:13, syscol:80
+[KEY_BACKSPACE] buf-pos:8 , buf-sz:33, t-linelength:9 , t-row:1 , t-col:66, t-end:14, syscol:80
+[KEY_BACKSPACE] buf-pos:7 , buf-sz:33, t-linelength:8 , t-row:1 , t-col:65, t-end:15, syscol:80
+[KEY_BACKSPACE] buf-pos:6 , buf-sz:33, t-linelength:7 , t-row:1 , t-col:64, t-end:16, syscol:80
+[KEY_BACKSPACE] buf-pos:5 , buf-sz:33, t-linelength:6 , t-row:1 , t-col:63, t-end:17, syscol:80
+[KEY_BACKSPACE] buf-pos:4 , buf-sz:33, t-linelength:5 , t-row:1 , t-col:62, t-end:18, syscol:80
+[KEY_BACKSPACE] buf-pos:3 , buf-sz:33, t-linelength:4 , t-row:1 , t-col:61, t-end:19, syscol:80
+[KEY_BACKSPACE] buf-pos:2 , buf-sz:33, t-linelength:3 , t-row:1 , t-col:60, t-end:20, syscol:80
+[KEY_BACKSPACE] buf-pos:1 , buf-sz:33, t-linelength:2 , t-row:1 , t-col:59, t-end:21, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:33, t-linelength:1 , t-row:1 , t-col:58, t-end:22, syscol:80
+[1            ] buf-pos:1 , buf-sz:34, t-linelength:2 , t-row:1 , t-col:59, t-end:21, syscol:80
+[1            ] buf-pos:2 , buf-sz:35, t-linelength:3 , t-row:1 , t-col:60, t-end:20, syscol:80
+[1            ] buf-pos:3 , buf-sz:36, t-linelength:4 , t-row:1 , t-col:61, t-end:19, syscol:80
+[1            ] buf-pos:4 , buf-sz:37, t-linelength:5 , t-row:1 , t-col:62, t-end:18, syscol:80
+[1            ] buf-pos:5 , buf-sz:38, t-linelength:6 , t-row:1 , t-col:63, t-end:17, syscol:80
+[1            ] buf-pos:6 , buf-sz:39, t-linelength:7 , t-row:1 , t-col:64, t-end:16, syscol:80
+[1            ] buf-pos:7 , buf-sz:40, t-linelength:8 , t-row:1 , t-col:65, t-end:15, syscol:80
+[1            ] buf-pos:8 , buf-sz:41, t-linelength:9 , t-row:1 , t-col:66, t-end:14, syscol:80
+[1            ] buf-pos:9 , buf-sz:42, t-linelength:10, t-row:1 , t-col:67, t-end:13, syscol:80
+[1            ] buf-pos:10, buf-sz:43, t-linelength:11, t-row:1 , t-col:68, t-end:12, syscol:80
+[1            ] buf-pos:11, buf-sz:44, t-linelength:12, t-row:1 , t-col:69, t-end:11, syscol:80
+[1            ] buf-pos:12, buf-sz:45, t-linelength:13, t-row:1 , t-col:70, t-end:10, syscol:80
+[1            ] buf-pos:13, buf-sz:46, t-linelength:14, t-row:1 , t-col:71, t-end:9 , syscol:80
+[1            ] buf-pos:14, buf-sz:47, t-linelength:15, t-row:1 , t-col:72, t-end:8 , syscol:80
+[2            ] buf-pos:15, buf-sz:48, t-linelength:16, t-row:1 , t-col:73, t-end:7 , syscol:80
+[3            ] buf-pos:16, buf-sz:49, t-linelength:17, t-row:1 , t-col:74, t-end:6 , syscol:80
+[4            ] buf-pos:17, buf-sz:50, t-linelength:18, t-row:1 , t-col:75, t-end:5 , syscol:80
+[5            ] buf-pos:18, buf-sz:51, t-linelength:19, t-row:1 , t-col:76, t-end:4 , syscol:80
+[6            ] buf-pos:19, buf-sz:52, t-linelength:20, t-row:1 , t-col:77, t-end:3 , syscol:80
+[7            ] buf-pos:20, buf-sz:53, t-linelength:21, t-row:1 , t-col:78, t-end:2 , syscol:80
+[8            ] buf-pos:21, buf-sz:54, t-linelength:22, t-row:1 , t-col:79, t-end:1 , syscol:80
+[9            ] buf-pos:22, buf-sz:55, t-linelength:23, t-row:1 , t-col:80, t-end:0 , syscol:80
+[0            ] buf-pos:23, buf-sz:56, t-linelength:24, t-row:2 , t-col:1 , t-end:79, syscol:80
+[-            ] buf-pos:24, buf-sz:57, t-linelength:25, t-row:2 , t-col:2 , t-end:78, syscol:80
+[=            ] buf-pos:25, buf-sz:58, t-linelength:26, t-row:2 , t-col:3 , t-end:77, syscol:80
+[KEY_BACKSPACE] buf-pos:24, buf-sz:58, t-linelength:25, t-row:2 , t-col:2 , t-end:78, syscol:80
+[KEY_BACKSPACE] buf-pos:23, buf-sz:58, t-linelength:24, t-row:2 , t-col:1 , t-end:79, syscol:80
+[q            ] buf-pos:24, buf-sz:59, t-linelength:25, t-row:2 , t-col:2 , t-end:78, syscol:80
+[w            ] buf-pos:25, buf-sz:60, t-linelength:26, t-row:2 , t-col:3 , t-end:77, syscol:80
+[e            ] buf-pos:26, buf-sz:61, t-linelength:27, t-row:2 , t-col:4 , t-end:76, syscol:80
+[r            ] buf-pos:27, buf-sz:62, t-linelength:28, t-row:2 , t-col:5 , t-end:75, syscol:80
+[t            ] buf-pos:28, buf-sz:63, t-linelength:29, t-row:2 , t-col:6 , t-end:74, syscol:80
+[y            ] buf-pos:29, buf-sz:64, t-linelength:30, t-row:2 , t-col:7 , t-end:73, syscol:80
+[u            ] buf-pos:30, buf-sz:65, t-linelength:31, t-row:2 , t-col:8 , t-end:72, syscol:80
+[i            ] buf-pos:31, buf-sz:66, t-linelength:32, t-row:2 , t-col:9 , t-end:71, syscol:80
+[o            ] buf-pos:32, buf-sz:67, t-linelength:33, t-row:2 , t-col:10, t-end:70, syscol:80
+[p            ] buf-pos:33, buf-sz:68, t-linelength:34, t-row:2 , t-col:11, t-end:69, syscol:80
+[KEY_LEFT     ] buf-pos:32, buf-sz:68, t-linelength:34, t-row:2 , t-col:10, t-end:70, syscol:80
+[KEY_LEFT     ] buf-pos:31, buf-sz:68, t-linelength:34, t-row:2 , t-col:9 , t-end:71, syscol:80
+[KEY_LEFT     ] buf-pos:30, buf-sz:68, t-linelength:34, t-row:2 , t-col:8 , t-end:72, syscol:80
+[KEY_LEFT     ] buf-pos:29, buf-sz:68, t-linelength:34, t-row:2 , t-col:7 , t-end:73, syscol:80
+[KEY_LEFT     ] buf-pos:28, buf-sz:68, t-linelength:34, t-row:2 , t-col:6 , t-end:74, syscol:80
+[KEY_LEFT     ] buf-pos:27, buf-sz:68, t-linelength:34, t-row:2 , t-col:5 , t-end:75, syscol:80
+[KEY_LEFT     ] buf-pos:26, buf-sz:68, t-linelength:34, t-row:2 , t-col:4 , t-end:76, syscol:80
+[KEY_LEFT     ] buf-pos:25, buf-sz:68, t-linelength:34, t-row:2 , t-col:3 , t-end:77, syscol:80
+[KEY_LEFT     ] buf-pos:24, buf-sz:68, t-linelength:34, t-row:2 , t-col:2 , t-end:78, syscol:80
+[KEY_LEFT     ] buf-pos:23, buf-sz:68, t-linelength:34, t-row:2 , t-col:1 , t-end:79, syscol:80
+[KEY_BACKSPACE] buf-pos:22, buf-sz:68, t-linelength:33, t-row:1 , t-col:80, t-end:0 , syscol:80
+[KEY_BACKSPACE] buf-pos:21, buf-sz:68, t-linelength:32, t-row:1 , t-col:79, t-end:1 , syscol:80
+[KEY_BACKSPACE] buf-pos:20, buf-sz:68, t-linelength:31, t-row:1 , t-col:78, t-end:2 , syscol:80
+[KEY_BACKSPACE] buf-pos:19, buf-sz:68, t-linelength:30, t-row:1 , t-col:77, t-end:3 , syscol:80
+[KEY_BACKSPACE] buf-pos:18, buf-sz:68, t-linelength:29, t-row:1 , t-col:76, t-end:4 , syscol:80
+[KEY_BACKSPACE] buf-pos:17, buf-sz:68, t-linelength:28, t-row:1 , t-col:75, t-end:5 , syscol:80
+[KEY_BACKSPACE] buf-pos:16, buf-sz:68, t-linelength:27, t-row:1 , t-col:74, t-end:6 , syscol:80
+[KEY_BACKSPACE] buf-pos:15, buf-sz:68, t-linelength:26, t-row:1 , t-col:73, t-end:7 , syscol:80
+[KEY_BACKSPACE] buf-pos:14, buf-sz:68, t-linelength:25, t-row:1 , t-col:72, t-end:8 , syscol:80
+[KEY_BACKSPACE] buf-pos:13, buf-sz:68, t-linelength:24, t-row:1 , t-col:71, t-end:9 , syscol:80
+[KEY_BACKSPACE] buf-pos:12, buf-sz:68, t-linelength:23, t-row:1 , t-col:70, t-end:10, syscol:80
+[KEY_BACKSPACE] buf-pos:11, buf-sz:68, t-linelength:22, t-row:1 , t-col:69, t-end:11, syscol:80
+[KEY_BACKSPACE] buf-pos:10, buf-sz:68, t-linelength:21, t-row:1 , t-col:68, t-end:12, syscol:80
+[KEY_BACKSPACE] buf-pos:9 , buf-sz:68, t-linelength:20, t-row:1 , t-col:67, t-end:13, syscol:80
+[KEY_BACKSPACE] buf-pos:8 , buf-sz:68, t-linelength:19, t-row:1 , t-col:66, t-end:14, syscol:80
+[KEY_BACKSPACE] buf-pos:7 , buf-sz:68, t-linelength:18, t-row:1 , t-col:65, t-end:15, syscol:80
+[KEY_BACKSPACE] buf-pos:6 , buf-sz:68, t-linelength:17, t-row:1 , t-col:64, t-end:16, syscol:80
+[KEY_BACKSPACE] buf-pos:5 , buf-sz:68, t-linelength:16, t-row:1 , t-col:63, t-end:17, syscol:80
+[KEY_BACKSPACE] buf-pos:4 , buf-sz:68, t-linelength:15, t-row:1 , t-col:62, t-end:18, syscol:80
+[KEY_BACKSPACE] buf-pos:3 , buf-sz:68, t-linelength:14, t-row:1 , t-col:61, t-end:19, syscol:80
+[KEY_BACKSPACE] buf-pos:2 , buf-sz:68, t-linelength:13, t-row:1 , t-col:60, t-end:20, syscol:80
+[KEY_BACKSPACE] buf-pos:1 , buf-sz:68, t-linelength:12, t-row:1 , t-col:59, t-end:21, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:68, t-linelength:11, t-row:1 , t-col:58, t-end:22, syscol:80
+[KEY_BACKSPACE] buf-pos:0 , buf-sz:68, t-linelength:11, t-row:1 , t-col:58, t-end:22, syscol:80
+
+lineLength: 11
+[KEY_F2       ] buf-pos:0 , buf-sz:68, t-linelength:11, t-row:1 , t-col:58, t-end:22, syscol:80
+KEY_F1
+--------- buffer contains ---------
+content: qwertyuiop                                                          
+  size: 68
+   pos: 0
+-----------------------------------
+[KEY_F1       ] buf-pos:0 , buf-sz:68, t-linelength:11, t-row:1 , t-col:58, t-end:22, syscol:80

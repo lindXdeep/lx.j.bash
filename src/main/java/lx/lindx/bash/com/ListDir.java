@@ -6,15 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static lx.lindx.bash.util.Util.getColumns;
-import static lx.lindx.bash.util.Util.getLogger;
-
-import lx.lindx.bash.sys.CmdUnix;
 import lx.lindx.bash.sys.Enviroment;
+import lx.lindx.bash.term.Terminal;
+import lx.lindx.bash.util.Util;
 
 public class ListDir {
 
@@ -40,7 +37,7 @@ public class ListDir {
   }
 
   public ListDir() {
-    sysColumns = CmdUnix.getColumns();
+    sysColumns = Terminal.getColumns();
   }
 
   public void byRows(final String path) {
@@ -63,7 +60,7 @@ public class ListDir {
       System.out.println();
     }
 
-    getLogger().info("Columns: " + sysColumns + ",\t" +
+    Util.log("Columns: " + sysColumns + ",\t" +
         "FileLength: " + minFileNameLength + ",\t" +
         "Cols: " + numCols + " / Rows: " + numRows);
   }

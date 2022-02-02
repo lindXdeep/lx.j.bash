@@ -1,17 +1,16 @@
 package lx.lindx.bash;
 
-import java.io.IOException;
-
-import lx.lindx.bash.com.ListDir;
+import lx.lindx.bash.api.Shell;
 
 /**
  * App
  */
 public class App {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
-    ListDir ls = new ListDir();
-    ls.byCols("/");
+    Shell shell = new Shell();
+
+    new Thread(shell).start();
   }
 }

@@ -1,10 +1,11 @@
 package lx.lindx.bash.sys;
 
-import static lx.lindx.bash.util.Util.getLogger;
-
 import java.io.Console;
 import java.io.IOException;
 import java.io.Reader;
+
+import lx.lindx.bash.term.Terminal;
+import lx.lindx.bash.util.Util;
 
 public class KeyEvent {
 
@@ -12,10 +13,8 @@ public class KeyEvent {
   private Reader reader;
   private StringBuilder buffer;
 
-  private int i = 0;
-
   public KeyEvent() {
-    Tty.raw();
+    Terminal.rawMode();
     console = System.console();
     reader = console.reader();
     buffer = new StringBuilder(9);
@@ -41,6 +40,7 @@ public class KeyEvent {
   }
 
   private String findKey(String seq) {
+
     if (seq.equals(EscSeq.KEY_TAB.sequence())) {
       return EscSeq.KEY_TAB.name();
     } else if (seq.equals(EscSeq.KEY_ENTER.sequence())) {
@@ -84,8 +84,8 @@ public class KeyEvent {
   }
 
   private void kill() {
-    Tty.sane();
-    getLogger().info("Exit shell");
+    Terminal.saneMode();
+    Util.log("Exit shell");
     Thread.currentThread().interrupt();
   }
 }

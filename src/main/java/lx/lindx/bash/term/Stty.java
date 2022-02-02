@@ -1,18 +1,22 @@
-package lx.lindx.bash.sys;
+package lx.lindx.bash.term;
 
 import java.io.IOException;
 
-public class Tty {
+import lx.lindx.bash.util.Util;
 
-  private static String sh = "/bin/sh";
-  private static String c = "-c";
-  private static String cmd = "stty %s < /dev/tty";
+public class Stty {
 
-  // "raw" mode (line editing bypassed and no enter key required)
-  private static String raw = "raw";
+  private final String STTY = "stty %s < /dev/tty";
 
-  // "cooked" mode (line editing with enter key required.)
-  private static String sane = "sane";
+  /**
+   * "raw" mode (line editing bypassed and no enter key required)
+   */
+  private final String raw = "raw";
+
+  /**
+   * "cooked" mode (line editing with enter key required.)
+   */
+  private final String sane = "sane";
 
   /*
    * stty -echo, это отключит вывод на экран набираемых данных. Вызов после этого
@@ -21,7 +25,7 @@ public class Tty {
    * нажатия клавиши Ввод (Enter), ядро передаст последнюю напечатанную строчку
    * программе cat, и она уже выведет её на экран.
    */
-  private static String echo = "-echo";
+  private final String echo = "-echo";
 
   /*
    * stty -icanon - это отключит канонический режим. Если после этого попытаться,
@@ -31,40 +35,18 @@ public class Tty {
    * будет получать (и, соответственно, выводить) данные не строчками, как раньше,
    * а отдельными символами.
    */
-  private static String icanon = "-icanon min 1";
+  private final String icanon = "-icanon min 1";
 
-  public static void raw() {
-    try {
-
-      stty(raw);
-      stty(echo);
-      stty(icanon);
-
-      
-
-    } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-    }
+  Stty() {
   }
 
-  public static void sane() {
-    try {
-
-      stty(sane);
-    } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-    }
+  public void raw() throws InterruptedException, IOException {
+    Exec.execute(STTY, raw);
+    Exec.execute(STTY, echo);
+    Exec.execute(STTY, icanon);
   }
 
-  private static void stty(final String args) throws IOException, InterruptedException {
-
-    exec(new String[] {
-        sh, c, String.format(cmd, args)
-    });
-  }
-
-  private static void exec(final String[] command) throws IOException, InterruptedException {
-
-    Runtime.getRuntime().exec(command).waitFor();
+  public void sane() throws InterruptedException, IOException {
+    Exec.execute(STTY, sane);
   }
 }
