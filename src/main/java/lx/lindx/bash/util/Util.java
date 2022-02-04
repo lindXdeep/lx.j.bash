@@ -23,18 +23,41 @@ public class Util {
 
   /**
    * 
-   * @param key
+   * @param key  - Current key char
    * @param args
    * 
-   *             arg[0] = "buf-pos" - cursor position in line buffer.
-   *             arg[1] = "buf-size" - line buffer size.
-   *             arg[2] = "t-linelength" - currrent line length in terminal.
-   *             arg[3] = "t-row" - cursor position row.
-   *             arg[4] = "t-col" - cursor position col.
-   *             arg[5] = "syscol" - current columns size in terminal.
+   *             <pre>
+   * arg[0] = "buf-pos" - cursor position in line buffer.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[1] = "buf-size" - line buffer size.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[2] = "t-linelength" - currrent line length in terminal.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[3] = "t-row" - cursor position row.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[4] = "t-col" - cursor position col.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[5] = "t-end" - left to the end.
+   *             </pre>
+   * 
+   *             <pre>
+   * arg[6] = "syscol" - current columns size in terminal.
+   *             </pre>
+   * 
    */
   public static void logKey(final String key, int... args) {
-    KEYLOG.logKey(String.format("[%-13s] buf-pos:%-2d, buf-sz:%-2d, t-linelength:%-2d, t-row:%-2d, t-col:%-2d, t-end:%-2d, syscol:%d\n",
+    KEYLOG.logKey(String.format(
+        "[%-13s] buf-pos:%-2d, buf-sz:%-2d, t-linelength:%-2d, t-row:%-2d, t-col:%-2d, t-end:%-2d, syscol:%d\n",
         key, args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
   }
 

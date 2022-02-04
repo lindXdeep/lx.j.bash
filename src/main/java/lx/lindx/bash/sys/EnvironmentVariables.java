@@ -3,7 +3,7 @@ package lx.lindx.bash.sys;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class Enviroment {
+public class EnvironmentVariables {
 
   public static final String USER_NAME = getProperty("user.name");
   public static final String COMP_NAME = getHostName();

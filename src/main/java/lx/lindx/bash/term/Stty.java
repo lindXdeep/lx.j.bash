@@ -2,8 +2,6 @@ package lx.lindx.bash.term;
 
 import java.io.IOException;
 
-import lx.lindx.bash.util.Util;
-
 public class Stty {
 
   private final String STTY = "stty %s < /dev/tty";

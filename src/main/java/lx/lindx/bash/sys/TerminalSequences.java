@@ -3,7 +3,7 @@ package lx.lindx.bash.sys;
 /**
  * Terminal control sequences.
  */
-public class TermSeq {
+public class TerminalSequences {
 
   /**
    * Clear the screen

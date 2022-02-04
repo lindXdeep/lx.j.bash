@@ -1,6 +1,6 @@
 package lx.lindx.bash;
 
-import lx.lindx.bash.api.Shell;
+import lx.lindx.bash.core.Shell;
 
 /**
  * App
@@ -9,8 +9,7 @@ public class App {
 
   public static void main(String[] args) {
 
-    Shell shell = new Shell();
+    new Thread(new Shell()).start();
 
-    new Thread(shell).start();
   }
 }

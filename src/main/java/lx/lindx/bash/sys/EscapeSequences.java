@@ -1,6 +1,6 @@
 package lx.lindx.bash.sys;
 
-public enum EscSeq {
+public enum EscapeSequences {
   KEY_TAB("9"),
   KEY_ENTER("13"),
   KEY_BACKSPACE("127"),
@@ -28,7 +28,7 @@ public enum EscSeq {
 
   private final String seq;
 
-  EscSeq(final String seq) {
+  EscapeSequences(final String seq) {
     this.seq = seq;
   }
 

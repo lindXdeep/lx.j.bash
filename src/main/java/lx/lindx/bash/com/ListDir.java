@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import lx.lindx.bash.sys.Enviroment;
+import lx.lindx.bash.sys.EnvironmentVariables;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
 
@@ -22,7 +22,7 @@ public class ListDir {
   private int minFileNameLength;
 
   private final String nameCommand = "ls";
-  private final String sptr = Enviroment.FILE_SEPARATOR;
+  private final String sptr = EnvironmentVariables.FILE_SEPARATOR;
 
   private class ComparatorIgnoreSpecialChars implements Comparator<Path> {
 
