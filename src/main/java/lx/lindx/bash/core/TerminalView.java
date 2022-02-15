@@ -24,13 +24,21 @@ public class TerminalView {
     this.lineLength = lineLength;
   }
 
+  public void print(final char ch) {
+    print(new char[] { ch });
+  }
+
+  public void print(final Object... obj) {
+    for (Object o : obj)
+      print(o.toString());
+  }
+
   public void print(final String... str) {
     for (String s : str)
-      System.out.print(s);
+      print(new String(s).toCharArray());
   }
 
   public void print(final char... ch) {
-
     for (char c : ch)
       System.out.print(c);
   }
@@ -65,7 +73,12 @@ public class TerminalView {
     lineLength = 0;
   }
 
-  private void move(int row, int col) {
+  public void newLineAndReturnСarriage() {
+    newLine();
+    print("\r");
+  }
+
+  public void move(int row, int col) {
     print(String.format(MOV_CURR_R_C, row, col));
   }
 
@@ -98,5 +111,17 @@ public class TerminalView {
 
   public void setEdge(int length) {
     this.edge = length;
+  }
+
+  public int getEdge() {
+    return this.edge;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public void shiftCol(int col) {
+    this.col += col;
   }
 }

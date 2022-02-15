@@ -61,6 +61,12 @@ public class Util {
         key, args[0], args[1], args[2], args[3], args[4], args[5], args[6]));
   }
 
+  public static void logKey(final String key, String buff, String parent, int... args) {
+    KEYLOG.logKey(String.format(
+        "[%-13s] buf-pos:%-2d, buf-sz:%-2d, t-linelength:%-2d, t-row:%-2d, t-col:%-2d, t-end:%-2d, syscol:%d, >> %s [%s]\n",
+        key, args[0], args[1], args[2], args[3], args[4], args[5], args[6], buff, parent));
+  }
+
   public static void logKey(final String str) {
     KEYLOG.logKey(str);
   }

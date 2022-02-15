@@ -9,14 +9,24 @@
       </PatternLayout>
     </File>
 
+    <File name="info_log_file" fileName="./log/info.log">
+      <PatternLayout>
+        <Pattern>
+          %-5p %d{yyyy-MM-dd HH:mm:ss} [%F:%L] %C [%t]%ex - %m%n
+        </Pattern>
+      </PatternLayout>
+    </File>
+
+    <!-- 
     <Console name="stdout" target="SYSTEM_OUT">
       <PatternLayout pattern="%n%-5p %d{yyyy-MM-dd} [%t] %C - %m%n" />
-    </Console>
+    </Console> -->
+
 
   </Appenders>
   <Loggers>
     <Root level="trace">
-      <AppenderRef ref="stdout" level="DEBUG"></AppenderRef>
+      <AppenderRef ref="info_log_file" level="DEBUG"></AppenderRef>
       <AppenderRef ref="error_log_file" level="ERROR"></AppenderRef>
     </Root>
   </Loggers>
