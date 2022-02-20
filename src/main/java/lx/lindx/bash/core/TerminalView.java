@@ -124,4 +124,8 @@ public class TerminalView {
   public void shiftCol(int col) {
     this.col += col;
   }
+
+  public void shiftRow(int countrows) {
+    this.row += countrows;
+  }
 }

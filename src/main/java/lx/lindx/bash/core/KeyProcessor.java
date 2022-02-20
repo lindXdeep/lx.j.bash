@@ -23,9 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.logging.log4j.core.appender.rolling.action.DeletingVisitor;
 
 import lx.lindx.bash.com.ChangeDirectory;
 import lx.lindx.bash.com.ListDirectory;
@@ -43,7 +43,6 @@ public class KeyProcessor {
   private String workPath;
 
   private String parentPath = "";
-  private String tmpPath = "";
 
   private Ps1 ps1;
   private TerminalView termView;
@@ -81,6 +80,9 @@ public class KeyProcessor {
 
   public void proccess(final String key) {
 
+    String childPath = "";
+    String tmpPath = "";
+
     termView.setEdge(ps1.length() + 1);
     bufSize = buffer.length();
 
@@ -103,55 +105,114 @@ public class KeyProcessor {
 
         Terminal.saneMode();
 
-        tmpPath = cutPathFromString(buffer); // находим в буфере нужную строку
-        Path respath = Paths.get(workPath, tmpPath); // текущий путь от cd workdir + tmppath
-        Util.logKey(":" + respath.toString());
+        tmpPath = cutPathFromString(buffer);
 
-        if (Files.exists(respath)) {
+        Path fullpath = tmpPath.startsWith(sptr) ? Paths.get(tmpPath) : Paths.get(workPath, tmpPath);
 
-          List<Path> lph = new LinkedList<>();
+        if (!Files.exists(fullpath)) {
+          Util.logKey("PATH-FALSE");
+          // если пкть не существует то смотрим в родителе на предмет совпадения с чайлдом
 
-          Path[] lsdir = ls.getDirs(respath.toString(), false);
+          parentPath = cutParentDir(fullpath.toString())[0];
+          childPath = cutParentDir(fullpath.toString())[1];
 
-          Util.logKey("\n:exists size:" + lsdir.length + "\n" + respath.toString());
+          if (Files.exists(Paths.get(parentPath))) {
+            Util.logKey("!!PARENT!!");
+            Path[] p = ls.getDirs(parentPath, false);
+
+            List<Path> lsdir = new ArrayList<>();
+
+            for (Path path : p) {
+              if (path.toString().startsWith(childPath.substring(1))) {
+                lsdir.add(path);
+              }
+            }
+
+            if (lsdir.size() > 1 && lsdir.get(1).toString().startsWith(lsdir.get(0).toString())) {
+
+              buffer.insert(bufPos, lsdir.get(0).toString().substring(childPath.substring(1).length()));
+
+              int move = lsdir.get(0).toString().length() - childPath.substring(1).length();
+              bufPos += move;
+
+              termView.print(lsdir.get(0).toString().substring(childPath.length() - 1));
+              termView.shiftCol(move - 1);
+              termView.print(buffer.toString().substring(bufPos));
+              termView.next();
+
+            } else if (lsdir.size() == 1) {
+
+              buffer.insert(bufPos, lsdir.get(0).toString().substring(childPath.substring(1).length()));
+
+              int move = lsdir.get(0).toString().length() - childPath.substring(1).length();
+              bufPos += move;
+
+              buffer.insert(bufPos, sptr);
+
+              termView.print(lsdir.get(0).toString().substring(childPath.length() - 1));
+              termView.shiftCol(move - 1);
+              termView.print(buffer.toString().substring(bufPos));
+              termView.next();
+              termView.next();
+              bufPos++;
+
+            } else {
+
+              System.out.println();
+
+              int countrows = 0;
+              for (Path path : lsdir) {
+
+                System.out.println(path);
+                countrows++;
+
+              }
+
+              termView.shiftRow(countrows + 1);
+              termView.print(ps1);
+              termView.print(buffer);
+            }
+
+          } else {
+            Util.logKey("--NO PARENT--");
+
+          }
+
+          /*
+           * По первому слвову ищем самое длижайшее тоное полное совпалдение маленьке
+           * 
+           * 
+           */
+
+        } else {
+          parentPath = fullpath.toString();
+          childPath = sptr;
+          // если путь существует то показываем содержимое
+
+          Util.logKey("PATH-TRUE");
+
+          Path[] p = ls.getDirs(parentPath, false);
 
           System.out.println();
-          for (Path p : lsdir) {
-            System.out.println(p);
-          }
-        } else {
 
-          LinkedList<Path> lspath = new LinkedList<>();
+          int countrows = 0;
+          for (Path path : p) {
 
-          String parent = cutParentDir(tmpPath);
-          String child = tmpPath.substring(parent.length());
-
-          child = child.replace(sptr, "");
-
-          Util.logKey("\n------");
-          Util.logKey("\nне существует\n");
-          Util.logKey("parent:" + parent);
-          Util.logKey("\nchild:" + child);
-          Util.logKey("\n------");
-
-          Path[] lps = ls.getDirs(workPath + sptr + parent, false);
-
-          for (Path p : lps) {
-            if (p.toString().startsWith(child)) {
-              lspath.add(p);
-            }
+            System.out.println(path);
+            countrows++;
 
           }
 
-          if (lspath.size() == 1) {
-            termView.print(lspath.get(0), "commleet");
-          } else if (lspath.size() > 1) {
-            System.out.println();
-            for (Path p : lspath) {
-              System.out.println(p);
-            }
-          }
+          termView.shiftRow(countrows + 1);
+          termView.print(ps1);
+          termView.print(buffer);
+
         }
+
+        Util.logKey("f::>" + fullpath + "\n");
+        Util.logKey("p::>" + parentPath + "\n");
+        Util.logKey("c::>" + childPath + "\n");
+        Util.logKey("t::>" + tmpPath + "\n");
 
         Terminal.rawMode();
 
@@ -230,8 +291,9 @@ public class KeyProcessor {
       }
     }
 
-    Util.logKey(null, buffer.toString(), tmpPath, bufPos, bufSize,
-        termView.getLinelength(), termView.getRow(), termView.getCol(), termView.toEnd(), termView.getSysCol());
+    Util.logKey(null, buffer.toString(), tmpPath, bufPos, bufSize, termView.getLinelength(), termView.getRow(),
+        termView.getCol(), termView.toEnd(), termView.getSysCol());
+
   }
 
   private void dropBuffer() {
@@ -254,13 +316,16 @@ public class KeyProcessor {
     return str.substring(0, bufPos);
   }
 
-  private String cutParentDir(final String str) {
-    int idx = str.lastIndexOf(sptr);
+  private String[] cutParentDir(final String str) {
+
+    String subStr = str.endsWith(sptr) ? str.substring(0, str.length() - 1) : str;
+
+    int idx = subStr.lastIndexOf(sptr);
 
     if (idx == -1) {
-      return "";
+      return new String[] { "", "" };
     }
 
-    return str.substring(0, idx);
+    return new String[] { subStr.substring(0, idx), subStr.substring(idx, subStr.length()) };
   }
 }
