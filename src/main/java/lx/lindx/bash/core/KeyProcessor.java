@@ -25,8 +25,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.core.appender.rolling.action.DeletingVisitor;
-
 import lx.lindx.bash.com.ChangeDirectory;
 import lx.lindx.bash.com.ListDirectory;
 import lx.lindx.bash.sys.EnvironmentVariables;
@@ -105,111 +103,138 @@ public class KeyProcessor {
 
         Terminal.saneMode();
 
-        tmpPath = cutPathFromString(buffer);
+        tmpPath = Util.cutPathFromString(buffer, bufPos);
 
-        Path fullpath = tmpPath.startsWith(sptr) ? Paths.get(tmpPath) : Paths.get(workPath, tmpPath);
+        String fullpath = tmpPath.startsWith(sptr) ? tmpPath : workPath.concat(sptr).concat(tmpPath);
 
-        if (!Files.exists(fullpath)) {
-          Util.logKey("PATH-FALSE");
-          // если пкть не существует то смотрим в родителе на предмет совпадения с чайлдом
+        parentPath = Util.cutParentAndChildDir(fullpath)[0];
+        childPath = Util.cutParentAndChildDir(fullpath)[1];
 
-          parentPath = cutParentDir(fullpath.toString())[0];
-          childPath = cutParentDir(fullpath.toString())[1];
+        if (!Files.exists(Paths.get(fullpath)) && Files.exists(Paths.get(parentPath))) {
 
-          if (Files.exists(Paths.get(parentPath))) {
-            Util.logKey("!!PARENT!!");
-            Path[] p = ls.getDirs(parentPath, false);
+          List<Path> lsdir = new ArrayList<>();
+
+          for (Path path : ls.getDirs(parentPath, false)) {
+            if (path.toString().startsWith(childPath)) {
+              lsdir.add(path);
+            }
+          }
+
+          if (lsdir.size() == 1) {
+
+            String pathElem = lsdir.get(0).toString();
+            int elemLength = pathElem.length();
+            int childLength = childPath.length();
+
+            buffer.insert(bufPos, pathElem.substring(childLength));
+
+            int move = elemLength - childLength;
+            bufPos += move;
+            buffer.insert(bufPos, sptr);
+
+            termView.print(pathElem.substring(childLength));
+            termView.shiftCol(move);
+            termView.print(buffer.toString().substring(bufPos));
+            termView.next();
+            bufPos++;
+
+          } else if (lsdir.size() > 1 && lsdir.get(1).toString().startsWith(lsdir.get(0).toString())
+              && childPath.length() > 1) {
+
+            String pathElem = lsdir.get(0).toString();
+            int elemLength = pathElem.length();
+            int childLength = childPath.length();
+
+            buffer.insert(bufPos, pathElem.substring(childLength));
+
+            int move = elemLength - childLength;
+            bufPos += move;
+
+            termView.print(pathElem.substring(childLength));
+            termView.shiftCol(move - 1);
+            termView.print(buffer.toString().substring(bufPos));
+            termView.next();
+
+          } else if (lsdir.size() > 1) {
+
+            System.out.println();
+            int shiftrows = 0;
+            for (Path path : lsdir) {
+              System.out.println(path);
+              shiftrows++;
+            }
+
+            termView.print(ps1);
+            termView.print(buffer);
+            termView.shiftRow(shiftrows + 1);
+            termView.shiftCol(-1);
+            termView.next();
+          }
+
+        } else if (Files.exists(Paths.get(fullpath))) {
+
+          if (fullpath.endsWith(sptr)) {
+
+            System.out.println();
+            int shiftrows = 0;
+            for (Path p : ls.getDirs(fullpath, false)) {
+              System.out.println(p);
+              shiftrows++;
+            }
+
+            termView.print(ps1);
+            termView.print(buffer);
+            termView.shiftRow(shiftrows + 1);
+            termView.shiftCol(-1);
+            termView.next();
+
+          } else {
 
             List<Path> lsdir = new ArrayList<>();
 
-            for (Path path : p) {
-              if (path.toString().startsWith(childPath.substring(1))) {
-                lsdir.add(path);
+            for (Path p : ls.getDirs(parentPath, false)) {
+              if (p.toString().startsWith(childPath)) {
+                lsdir.add(p);
               }
             }
 
-            if (lsdir.size() > 1 && lsdir.get(1).toString().startsWith(lsdir.get(0).toString())) {
+            if (lsdir.size() == 1) {
 
-              buffer.insert(bufPos, lsdir.get(0).toString().substring(childPath.substring(1).length()));
+              String pathElem = lsdir.get(0).toString();
+              int elemLength = pathElem.length();
+              int childLength = childPath.length();
 
-              int move = lsdir.get(0).toString().length() - childPath.substring(1).length();
+              buffer.insert(bufPos, pathElem.substring(childLength));
+
+              int move = elemLength - childLength;
               bufPos += move;
-
-              termView.print(lsdir.get(0).toString().substring(childPath.length() - 1));
-              termView.shiftCol(move - 1);
-              termView.print(buffer.toString().substring(bufPos));
-              termView.next();
-
-            } else if (lsdir.size() == 1) {
-
-              buffer.insert(bufPos, lsdir.get(0).toString().substring(childPath.substring(1).length()));
-
-              int move = lsdir.get(0).toString().length() - childPath.substring(1).length();
-              bufPos += move;
-
               buffer.insert(bufPos, sptr);
 
-              termView.print(lsdir.get(0).toString().substring(childPath.length() - 1));
-              termView.shiftCol(move - 1);
+              termView.print(pathElem.substring(childLength));
+              termView.shiftCol(move);
               termView.print(buffer.toString().substring(bufPos));
-              termView.next();
               termView.next();
               bufPos++;
 
             } else {
-
               System.out.println();
-
-              int countrows = 0;
-              for (Path path : lsdir) {
-
-                System.out.println(path);
-                countrows++;
-
+              int shiftrows = 0;
+              for (Path p : ls.getDirs(parentPath, false)) {
+                if (p.toString().startsWith(childPath)) {
+                  lsdir.add(p);
+                  shiftrows++;
+                }
               }
-
-              termView.shiftRow(countrows + 1);
               termView.print(ps1);
               termView.print(buffer);
+              termView.shiftRow(shiftrows + 1);
+              termView.shiftCol(-1);
+              termView.next();
             }
-
-          } else {
-            Util.logKey("--NO PARENT--");
-
           }
-
-          /*
-           * По первому слвову ищем самое длижайшее тоное полное совпалдение маленьке
-           * 
-           * 
-           */
-
-        } else {
-          parentPath = fullpath.toString();
-          childPath = sptr;
-          // если путь существует то показываем содержимое
-
-          Util.logKey("PATH-TRUE");
-
-          Path[] p = ls.getDirs(parentPath, false);
-
-          System.out.println();
-
-          int countrows = 0;
-          for (Path path : p) {
-
-            System.out.println(path);
-            countrows++;
-
-          }
-
-          termView.shiftRow(countrows + 1);
-          termView.print(ps1);
-          termView.print(buffer);
-
         }
 
-        Util.logKey("f::>" + fullpath + "\n");
+        Util.logKey("\nf::>" + fullpath + "\n");
         Util.logKey("p::>" + parentPath + "\n");
         Util.logKey("c::>" + childPath + "\n");
         Util.logKey("t::>" + tmpPath + "\n");
@@ -302,30 +327,4 @@ public class KeyProcessor {
     bufSize = 0;
   }
 
-  private String cutPathFromString(final StringBuffer buffer) {
-
-    if (buffer.length() < 1)
-      return "";
-
-    String str = buffer.substring(0, bufPos);
-    int idx = str.lastIndexOf(32);
-
-    if (idx != -1) {
-      return str.substring(idx + 1, bufPos);
-    }
-    return str.substring(0, bufPos);
-  }
-
-  private String[] cutParentDir(final String str) {
-
-    String subStr = str.endsWith(sptr) ? str.substring(0, str.length() - 1) : str;
-
-    int idx = subStr.lastIndexOf(sptr);
-
-    if (idx == -1) {
-      return new String[] { "", "" };
-    }
-
-    return new String[] { subStr.substring(0, idx), subStr.substring(idx, subStr.length()) };
-  }
 }

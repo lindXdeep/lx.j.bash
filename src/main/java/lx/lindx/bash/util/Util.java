@@ -2,11 +2,13 @@ package lx.lindx.bash.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import lx.lindx.bash.sys.EnvironmentVariables;
 
 public class Util {
 
   private final static Logger LOGGER;
   private final static KeyLogger KEYLOG;
+  private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
 
   static {
     LOGGER = LogManager.getLogger(Util.class.getSuperclass().getName());
@@ -69,5 +71,36 @@ public class Util {
 
   public static void logKey(final String str) {
     KEYLOG.logKey(str);
+  }
+
+  public static String cutPathFromString(final StringBuffer buffer, final int bufferPosition) {
+
+    if (buffer.length() < 1)
+      return "";
+
+    String str = buffer.substring(0, bufferPosition);
+    int idx = str.lastIndexOf(32);
+
+    if (idx != -1) {
+      return str.substring(idx + 1, bufferPosition);
+    }
+    return str.substring(0, bufferPosition);
+  }
+
+  public static String[] cutParentAndChildDir(final String pathString) {
+
+    String subPaths = pathString.endsWith(SPTR)
+        ? pathString.substring(0, pathString.length() - 1)
+        : pathString;
+
+    int idx = subPaths.lastIndexOf(SPTR);
+
+    if (idx == -1) {
+      return new String[] { SPTR, "" };
+    }
+
+    return new String[] {
+        subPaths.substring(0, ++idx),
+        subPaths.substring(idx) };
   }
 }
