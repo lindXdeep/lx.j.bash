@@ -37,10 +37,10 @@ public class KeyProcessor {
   private int bufPos;
   private int bufSize;
 
+  private BufferView bufferView;
+
   private String sptr;
   private String workPath;
-
-  private String parentPath = "";
 
   private Ps1 ps1;
   private TerminalView termView;
@@ -61,6 +61,7 @@ public class KeyProcessor {
 
     buffer = new StringBuffer();
     termView = new TerminalView();
+    buffView = new BufferView(termView);
 
     ps1 = new Ps1();
     ls = new ListDirectory();
@@ -73,12 +74,15 @@ public class KeyProcessor {
     sptr = EnvironmentVariables.FILE_SEPARATOR;
     workPath = ps1.getWorkingDirectory();
 
-    Util.logKey(null, buffer.toString(), parentPath, bufPos, bufSize,
-        termView.getLinelength(), termView.getRow(), termView.getCol(), termView.toEnd(), termView.getSysCol());
+    termView.setEdge(ps1.length() + 1);
+    termView.clearScreen();
+    termView.print(ps1);
   }
 
   public void proccess(final String key) {
 
+    String fullpath = "";
+    String parentPath = "";
     String childPath = "";
     String tmpPath = "";
 
@@ -87,27 +91,16 @@ public class KeyProcessor {
 
     if (key.length() == 1) {
 
-      if (bufPos == bufSize) {
-        buffer.append(key);
-        termView.print(key.charAt(0));
-      } else {
-        buffer.insert(bufPos, key);
-        termView.print(buffer.substring(bufPos));
-      }
-
-      termView.setLineLength(bufSize = buffer.length());
-      termView.next();
-      bufPos++;
+      buffView.insertChar(key);
 
     } else {
       if (key.equals(KEY_TAB.name())) {
 
         Terminal.saneMode();
 
-        tmpPath = Util.cutPathFromString(buffer, bufPos);
+        tmpPath = buffView.cutPathBeforePos();
 
-        String fullpath = tmpPath.startsWith(sptr) ? tmpPath : workPath.concat(sptr).concat(tmpPath);
-
+        fullpath = tmpPath.startsWith(sptr) ? tmpPath : workPath.concat(sptr).concat(tmpPath);
         parentPath = Util.cutParentAndChildDir(fullpath)[0];
         childPath = Util.cutParentAndChildDir(fullpath)[1];
 
@@ -123,21 +116,22 @@ public class KeyProcessor {
 
           if (lsdir.size() == 1) {
 
-            String pathElem = lsdir.get(0).toString();
-            int elemLength = pathElem.length();
-            int childLength = childPath.length();
+            String pathElem = lsdir.get(0).toString(); // dev-libs
 
-            buffer.insert(bufPos, pathElem.substring(childLength));
+            int elemLength = pathElem.length(); // 7 dev-libs
+            int childLength = childPath.length(); // 2 dev
+            int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
 
-            int move = elemLength - childLength;
-            bufPos += move;
-            buffer.insert(bufPos, sptr);
+            buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
+            buffView.shiftpos(appendlength);
 
-            termView.print(pathElem.substring(childLength));
-            termView.shiftCol(move);
-            termView.print(buffer.toString().substring(bufPos));
+            termView.shiftCol(appendlength);
+
+            buffView.insertElem(sptr);
+            buffView.shiftpos(1);
+
+            termView.print(buffView.getBufferFromPos());
             termView.next();
-            bufPos++;
 
           } else if (lsdir.size() > 1 && lsdir.get(1).toString().startsWith(lsdir.get(0).toString())
               && childPath.length() > 1) {
@@ -145,15 +139,14 @@ public class KeyProcessor {
             String pathElem = lsdir.get(0).toString();
             int elemLength = pathElem.length();
             int childLength = childPath.length();
+            int appendlength = elemLength - childLength;
 
-            buffer.insert(bufPos, pathElem.substring(childLength));
+            buffView.insertElem(pathElem.substring(childLength));
+            buffView.shiftpos(appendlength);
 
-            int move = elemLength - childLength;
-            bufPos += move;
+            termView.shiftCol(appendlength - 1);
 
-            termView.print(pathElem.substring(childLength));
-            termView.shiftCol(move - 1);
-            termView.print(buffer.toString().substring(bufPos));
+            termView.print(buffView.getBufferFromPos());
             termView.next();
 
           } else if (lsdir.size() > 1) {
@@ -247,25 +240,12 @@ public class KeyProcessor {
         termView.setEdge(ps1.length() + 1);
         termView.print("\n\r", ps1);
         termView.newLine();
-        dropBuffer();
+
+        buffView.dropBuffer();
 
       } else if (key.equals(KEY_BACKSPACE.name())) {
 
-        if (bufPos > 0) {
-
-          buffer.deleteCharAt(--bufPos);
-          buffer.append(' ');
-
-          termView.print("\b", bufPos == bufSize ? " " : buffer.substring(bufPos));
-
-          if (termView.prev()) {
-            termView.print(buffer.substring(bufPos));
-          }
-
-          termView.lastPos();
-          termView.setLineLength(--bufSize);
-          buffer.setLength(bufSize);
-        }
+        buffView.deletePrevChar();
 
       } else if (key.equals(KEY_F1.name())) {
 
@@ -293,39 +273,23 @@ public class KeyProcessor {
         // System.out.print(KEY_INSERT);
       } else if (key.equals(KEY_DELETE.name())) {
 
-        if (bufPos < bufSize) {
-          buffer.deleteCharAt(bufPos);
-          buffer.append(' ');
-          termView.print(buffer.substring(bufPos));
-          termView.lastPos();
-          buffer.setLength(--bufSize);
-        }
+        buffView.deleteNextChar();
 
       } else if (key.equals(KEY_UP.name())) {
         // System.out.print(KEY_UP);
       } else if (key.equals(KEY_DOWN.name())) {
       } else if (key.equals(KEY_RIGHT.name())) {
-        if (bufPos < bufSize) {
-          termView.next();
-          bufPos++;
-        }
+
+        buffView.moveRight();
+
       } else if (key.equals(KEY_LEFT.name())) {
-        if (bufPos > 0) {
-          termView.prev();
-          bufPos--;
-        }
+
+        buffView.moveLeft();
+
       }
     }
 
     Util.logKey(null, buffer.toString(), tmpPath, bufPos, bufSize, termView.getLinelength(), termView.getRow(),
         termView.getCol(), termView.toEnd(), termView.getSysCol());
-
   }
-
-  private void dropBuffer() {
-    buffer = new StringBuffer();
-    bufPos = 0;
-    bufSize = 0;
-  }
-
 }

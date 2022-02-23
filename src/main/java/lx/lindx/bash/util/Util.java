@@ -8,7 +8,9 @@ public class Util {
 
   private final static Logger LOGGER;
   private final static KeyLogger KEYLOG;
+
   private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
+
 
   static {
     LOGGER = LogManager.getLogger(Util.class.getSuperclass().getName());
@@ -71,20 +73,6 @@ public class Util {
 
   public static void logKey(final String str) {
     KEYLOG.logKey(str);
-  }
-
-  public static String cutPathFromString(final StringBuffer buffer, final int bufferPosition) {
-
-    if (buffer.length() < 1)
-      return "";
-
-    String str = buffer.substring(0, bufferPosition);
-    int idx = str.lastIndexOf(32);
-
-    if (idx != -1) {
-      return str.substring(idx + 1, bufferPosition);
-    }
-    return str.substring(0, bufferPosition);
   }
 
   public static String[] cutParentAndChildDir(final String pathString) {
