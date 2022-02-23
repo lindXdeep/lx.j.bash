@@ -44,6 +44,7 @@ public class KeyProcessor {
 
   private Ps1 ps1;
   private TerminalView termView;
+  private BufferView buffView;
 
   /**
    * Base Commands:
@@ -221,7 +222,7 @@ public class KeyProcessor {
               int shiftrows = 0;
               for (Path p : ls.getDirs(parentPath, false)) {
                 if (p.toString().startsWith(childPath)) {
-                  lsdir.add(p);
+                  System.out.println(p);
                   shiftrows++;
                 }
               }
