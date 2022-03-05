@@ -1,12 +1,13 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash.view;
 
+import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.sys.EnvironmentVariables;
 
 public class BufferView {
 
   private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
 
-  private TerminalView termView;
+  private ConsoleView termView;
 
   private StringBuffer buffer;
   private int bufPos;
@@ -14,18 +15,18 @@ public class BufferView {
 
   private Ps1 ps1;
 
-  public BufferView(TerminalView termView) {
+  public BufferView(ConsoleView termView) {
     this.buffer = new StringBuffer();
     this.termView = termView;
 
     bufSize = buffer.length();
   }
 
-  public void insertChar(String key) {
+  public void insertChar(char key) {
 
     if (bufPos == bufSize) {
       buffer.append(key);
-      termView.print(key.charAt(0));
+      termView.print(key);
     } else {
       buffer.insert(bufPos, key);
       termView.print(buffer.substring(bufPos));
@@ -92,6 +93,7 @@ public class BufferView {
 
   public void shiftpos(int move) {
     bufPos += move;
+    bufSize = buffer.length();
   }
 
   public String cutPathBeforePos() {
@@ -110,5 +112,17 @@ public class BufferView {
 
   public String getBufferFromPos() {
     return buffer.substring(bufPos);
+  }
+
+  public StringBuffer getbuffer() {
+    return this.buffer;
+  }
+
+  public int getPos() {
+    return this.bufPos;
+  }
+
+  public int getSize() {
+    return this.bufSize;
   }
 }

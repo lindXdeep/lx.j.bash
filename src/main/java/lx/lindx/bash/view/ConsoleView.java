@@ -1,4 +1,4 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash.view;
 
 import static lx.lindx.bash.sys.TerminalSequences.CLS;
 import static lx.lindx.bash.sys.TerminalSequences.CURR_UP_LEFT;
@@ -6,7 +6,7 @@ import static lx.lindx.bash.sys.TerminalSequences.MOV_CURR_R_C;
 
 import lx.lindx.bash.term.Terminal;
 
-public class TerminalView {
+public class ConsoleView {
 
   private int lineLength; // terminal-lineLength
   private int edge;
@@ -15,7 +15,7 @@ public class TerminalView {
 
   private int sysCol; // system terminal width by cols
 
-  public TerminalView() {
+  public ConsoleView() {
     sysCol = Terminal.getColumns();
     col = edge;
   }

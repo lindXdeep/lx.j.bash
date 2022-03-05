@@ -20,238 +20,90 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import lx.lindx.bash.com.ChangeDirectory;
 import lx.lindx.bash.com.ListDirectory;
 import lx.lindx.bash.sys.EnvironmentVariables;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
+import lx.lindx.bash.view.FiltredDirs;
+import lx.lindx.bash.view.WordProcessor;
 
 public class KeyProcessor {
 
-  private StringBuffer buffer;
-  private int bufPos;
-  private int bufSize;
-
-  private BufferView bufferView;
-
   private String sptr;
-  private String workPath;
 
-  private Ps1 ps1;
-  private TerminalView termView;
-  private BufferView buffView;
-
-  /**
-   * Base Commands:
-   * 
-   * cd - Change the shell working directory.
-   * ls - List information about the FILEs (the current directory by default).
-   * 
-   */
+  private WordProcessor wordProc;
 
   private ListDirectory ls;
   private ChangeDirectory cd;
 
+  private FiltredDirs filtredDirs;
+
   public KeyProcessor() {
 
-    buffer = new StringBuffer();
-    termView = new TerminalView();
-    buffView = new BufferView(termView);
-
-    ps1 = new Ps1();
     ls = new ListDirectory();
     cd = new ChangeDirectory();
 
-    termView.setEdge(ps1.length() + 1);
-    termView.clearScreen();
-    termView.print(ps1);
-
     sptr = EnvironmentVariables.FILE_SEPARATOR;
-    workPath = ps1.getWorkingDirectory();
 
-    termView.setEdge(ps1.length() + 1);
-    termView.clearScreen();
-    termView.print(ps1);
+    filtredDirs = new FiltredDirs(ls);
+    wordProc = new WordProcessor(filtredDirs);
   }
 
   public void proccess(final String key) {
 
-    String fullpath = "";
-    String parentPath = "";
-    String childPath = "";
-    String tmpPath = "";
-
-    termView.setEdge(ps1.length() + 1);
-    bufSize = buffer.length();
-
     if (key.length() == 1) {
-
-      buffView.insertChar(key);
-
+      wordProc.insertElem(key.charAt(0));
     } else {
+
+      // --------- START TAB --------- //
+
       if (key.equals(KEY_TAB.name())) {
 
         Terminal.saneMode();
 
-        tmpPath = buffView.cutPathBeforePos();
+        wordProc.readPathBeforePos();
 
-        fullpath = tmpPath.startsWith(sptr) ? tmpPath : workPath.concat(sptr).concat(tmpPath);
-        parentPath = Util.cutParentAndChildDir(fullpath)[0];
-        childPath = Util.cutParentAndChildDir(fullpath)[1];
+        if (!Files.exists(Paths.get(wordProc.getFullpath())) && Files.exists(Paths.get(wordProc.getParentpath()))) {
 
-        if (!Files.exists(Paths.get(fullpath)) && Files.exists(Paths.get(parentPath))) {
+          filtredDirs.setPath(wordProc.getParentpath());
+          filtredDirs.filterbBy(wordProc.getChildpath());
 
-          List<Path> lsdir = new ArrayList<>();
-
-          for (Path path : ls.getDirs(parentPath, false)) {
-            if (path.toString().startsWith(childPath)) {
-              lsdir.add(path);
-            }
+          if (filtredDirs.size() == 1) {
+            wordProc.completePath();
+          } else if (filtredDirs.size() > 1 && filtredDirs.get(1).startsWith(filtredDirs.get(0))
+              && wordProc.getChildpath().length() > 1) {
+            wordProc.completePath2();
+          } else if (filtredDirs.size() > 1) {
+            wordProc.printDirs(filtredDirs.getDirs());
           }
 
-          if (lsdir.size() == 1) {
+        } else if (Files.exists(Paths.get(wordProc.getFullpath()))) {
 
-            String pathElem = lsdir.get(0).toString(); // dev-libs
-
-            int elemLength = pathElem.length(); // 7 dev-libs
-            int childLength = childPath.length(); // 2 dev
-            int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
-
-            buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
-            buffView.shiftpos(appendlength);
-
-            termView.shiftCol(appendlength);
-
-            buffView.insertElem(sptr);
-            buffView.shiftpos(1);
-
-            termView.print(buffView.getBufferFromPos());
-            termView.next();
-
-          } else if (lsdir.size() > 1 && lsdir.get(1).toString().startsWith(lsdir.get(0).toString())
-              && childPath.length() > 1) {
-
-            String pathElem = lsdir.get(0).toString();
-            int elemLength = pathElem.length();
-            int childLength = childPath.length();
-            int appendlength = elemLength - childLength;
-
-            buffView.insertElem(pathElem.substring(childLength));
-            buffView.shiftpos(appendlength);
-
-            termView.shiftCol(appendlength - 1);
-
-            termView.print(buffView.getBufferFromPos());
-            termView.next();
-
-          } else if (lsdir.size() > 1) {
-
-            System.out.println();
-            int shiftrows = 0;
-            for (Path path : lsdir) {
-              System.out.println(path);
-              shiftrows++;
-            }
-
-            termView.print(ps1);
-            termView.print(buffer);
-            termView.shiftRow(shiftrows + 1);
-            termView.shiftCol(-1);
-            termView.next();
-          }
-
-        } else if (Files.exists(Paths.get(fullpath))) {
-
-          if (fullpath.endsWith(sptr)) {
-
-            System.out.println();
-            int shiftrows = 0;
-            for (Path p : ls.getDirs(fullpath, false)) {
-              System.out.println(p);
-              shiftrows++;
-            }
-
-            termView.print(ps1);
-            termView.print(buffer);
-            termView.shiftRow(shiftrows + 1);
-            termView.shiftCol(-1);
-            termView.next();
-
+          if (wordProc.getFullpath().endsWith(sptr)) {
+            wordProc.printDirs(wordProc.getFullpath());
           } else {
 
-            List<Path> lsdir = new ArrayList<>();
+            filtredDirs.setPath(wordProc.getParentpath());
+            filtredDirs.filterbBy(wordProc.getChildpath());
 
-            for (Path p : ls.getDirs(parentPath, false)) {
-              if (p.toString().startsWith(childPath)) {
-                lsdir.add(p);
-              }
-            }
-
-            if (lsdir.size() == 1) {
-
-              String pathElem = lsdir.get(0).toString();
-              int elemLength = pathElem.length();
-              int childLength = childPath.length();
-
-              buffer.insert(bufPos, pathElem.substring(childLength));
-
-              int move = elemLength - childLength;
-              bufPos += move;
-              buffer.insert(bufPos, sptr);
-
-              termView.print(pathElem.substring(childLength));
-              termView.shiftCol(move);
-              termView.print(buffer.toString().substring(bufPos));
-              termView.next();
-              bufPos++;
-
-            } else {
-              System.out.println();
-              int shiftrows = 0;
-              for (Path p : ls.getDirs(parentPath, false)) {
-                if (p.toString().startsWith(childPath)) {
-                  System.out.println(p);
-                  shiftrows++;
-                }
-              }
-              termView.print(ps1);
-              termView.print(buffer);
-              termView.shiftRow(shiftrows + 1);
-              termView.shiftCol(-1);
-              termView.next();
+            if (filtredDirs.size() > 1) {
+              wordProc.printDirs(filtredDirs.getDirs());
+            } else if (filtredDirs.size() == 1) {
+              wordProc.completePath();
             }
           }
         }
 
-        Util.logKey("\nf::>" + fullpath + "\n");
-        Util.logKey("p::>" + parentPath + "\n");
-        Util.logKey("c::>" + childPath + "\n");
-        Util.logKey("t::>" + tmpPath + "\n");
-
         Terminal.rawMode();
 
       } else if (key.equals(KEY_ENTER.name())) {
-
-        termView.setEdge(ps1.length() + 1);
-        termView.print("\n\r", ps1);
-        termView.newLine();
-
-        buffView.dropBuffer();
-
+        wordProc.enter();
       } else if (key.equals(KEY_BACKSPACE.name())) {
-
-        buffView.deletePrevChar();
-
+        wordProc.deletePrevChar();
       } else if (key.equals(KEY_F1.name())) {
-
-        Util.logKey("--------------------\n");
-        Util.logKey(buffer.toString() + "\n");
-        Util.logKey("--------------------\n");
 
       } else if (key.equals(KEY_F2.name())) {
         // System.out.print(EscSeq.KEY_F2);
@@ -272,24 +124,33 @@ public class KeyProcessor {
       } else if (key.equals(KEY_INSERT.name())) {
         // System.out.print(KEY_INSERT);
       } else if (key.equals(KEY_DELETE.name())) {
-
-        buffView.deleteNextChar();
-
+        wordProc.deleteNextChar();
       } else if (key.equals(KEY_UP.name())) {
         // System.out.print(KEY_UP);
       } else if (key.equals(KEY_DOWN.name())) {
+
       } else if (key.equals(KEY_RIGHT.name())) {
-
-        buffView.moveRight();
-
+        wordProc.moveRight();
       } else if (key.equals(KEY_LEFT.name())) {
-
-        buffView.moveLeft();
-
+        wordProc.moveLeft();
       }
     }
 
-    Util.logKey(null, buffer.toString(), tmpPath, bufPos, bufSize, termView.getLinelength(), termView.getRow(),
-        termView.getCol(), termView.toEnd(), termView.getSysCol());
+    Util.logKey(
+        "\nF:" + wordProc.getFullpath() +
+            "\nP:" + wordProc.getParentpath() +
+            "\nC:" + wordProc.getChildpath() + "\n");
+
+    Util.logKey(null,
+
+        wordProc.getBuffer(),
+        wordProc.getTmpPath(),
+        wordProc.getBufferPos(),
+        wordProc.getBufferSize(),
+        wordProc.getLinelength(),
+        wordProc.getTermRow(),
+        wordProc.getTermCol(),
+        wordProc.getTermEnd(),
+        wordProc.getSysCol());
   }
 }

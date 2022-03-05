@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,18 +48,33 @@ public class ListDirectory {
   // print(readDir(path), 1);
   // }
 
-  // public void byCols(final String path) {
-  // print(readDir(path), (sysColumns / minFileNameLength));
-  // }
+  public void byCols(final String path) {
+    print(getDirs(path, false), (sysColumns / minFileNameLength));
+  }
+
+  public void byCols(List<Path> dirs) {
+
+    Path[] elems = new Path[dirs.size()];
+
+    int i = 0;
+
+    for (Path path : dirs) {
+      elems[i++] = path;
+      int currFileLength = path.toString().length();
+      minFileNameLength = currFileLength > minFileNameLength ? currFileLength : minFileNameLength;
+    }
+
+    print(elems, (sysColumns / minFileNameLength));
+  }
 
   private void print(final Path[] dirs, int numCols) {
 
     numFiles = dirs.length;
-    numRows = (numFiles / numCols);
+    numRows = (numFiles / numCols) == 0 ? 1 : (numFiles / numCols);
 
     for (int i = 0; i < numRows; i++) {
       for (int j = i; j < numFiles; j += numRows) {
-        System.out.printf(("%-" + (minFileNameLength - 2)).concat("s "), dirs[j].toString().substring(1) + sptr);
+        System.out.printf(("%-" + (minFileNameLength - 2)).concat("s "), dirs[j].toString() + sptr);
       }
       System.out.println();
     }
@@ -69,7 +85,6 @@ public class ListDirectory {
   }
 
   public Path[] getDirs(final String path, boolean absolutePath) {
-
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
       @Override
       public boolean accept(Path entry) throws IOException {
@@ -81,7 +96,6 @@ public class ListDirectory {
   }
 
   public Path[] getFiles(final String path, boolean absolutePath) {
-
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
       @Override
       public boolean accept(Path entry) throws IOException {
@@ -93,7 +107,6 @@ public class ListDirectory {
   }
 
   public Path[] getAll(final String path, boolean absolutePath) {
-
     DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
       @Override
       public boolean accept(Path entry) throws IOException {
@@ -108,21 +121,16 @@ public class ListDirectory {
 
     Path dirSrc = Paths.get(path);
 
-   
     Set<Path> paths = new TreeSet<>(new ComparatorIgnoreSpecialChars());
 
     if (Files.exists(dirSrc) && Files.isDirectory(dirSrc)) {
-     
 
       try (DirectoryStream<Path> dir = Files.newDirectoryStream(dirSrc, filter)) {
-
 
         for (Path p : dir) {
           int currFileLength = p.toString().length();
           minFileNameLength = currFileLength > minFileNameLength ? currFileLength : minFileNameLength;
           paths.add(absolutePath ? p : p.getFileName());
-
-
         }
 
       } catch (IOException e) {
@@ -130,7 +138,6 @@ public class ListDirectory {
       }
     }
     return paths.toArray(new Path[paths.size()]);
-
   }
 
   // @Override
