@@ -188,18 +188,28 @@ public class WordProcessor {
 
     StringBuilder result = new StringBuilder();
     char[] elem = filtredDirs.getDirs().get(0).toString().toCharArray();
+    String appendSeq = "";
 
-    boolean ch = true;
-
-    int i = 0;
-    while (i < elem.length && ch) {
-      for (Path c : filtredDirs.getDirs())
-        ch = c.toString().toCharArray()[i] != elem[i] ? false : true;
-      if (ch)
-        result.append(elem[i++]);
+    if (tmpPath.endsWith(appendSeq) && filtredDirs.size() > 1) {
+      this.printDirs(filtredDirs.getDirs());
     }
 
-    String appendSeq = result.toString().substring(childPath.length());
+    if (filtredDirs.size() > 1) {
+      boolean ch = true;
+
+      int i = 0;
+      while (i < elem.length && ch) {
+        for (Path c : filtredDirs.getDirs())
+          ch = c.toString().toCharArray()[i] != elem[i] ? false : true;
+        if (ch)
+          result.append(elem[i++]);
+      }
+      appendSeq = result.toString().substring(childPath.length());
+
+    } else if (filtredDirs.size() == 1) {
+      appendSeq = filtredDirs.getDirs().get(0).toString().concat(SPTR).substring(childPath.length());
+    }
+
     int appendlength = appendSeq.length();
 
     buffView.insertElem(appendSeq);
@@ -208,26 +218,6 @@ public class WordProcessor {
     termView.print(buffView.getBufferFromPos());
 
     termView.shiftCol(appendlength - 1);
-    termView.next();
-  }
-
-  public void completePathFull() {
-
-    String pathElem = filtredDirs.get(0);
-
-    int elemLength = pathElem.length(); // 7 dev-libs
-    int childLength = childPath.length(); // 2 dev
-    int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
-
-    buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
-    buffView.shiftpos(appendlength);
-
-    termView.shiftCol(appendlength);
-
-    buffView.insertElem(SPTR);
-    buffView.shiftpos(1);
-
-    termView.print(buffView.getBufferFromPos());
     termView.next();
   }
 }

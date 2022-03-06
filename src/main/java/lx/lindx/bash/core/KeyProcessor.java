@@ -19,9 +19,6 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_RIGHT;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import lx.lindx.bash.com.ChangeDirectory;
 import lx.lindx.bash.com.ListDirectory;
 import lx.lindx.bash.sys.EnvironmentVariables;
@@ -71,13 +68,10 @@ public class KeyProcessor {
 
         if (!wordProc.isFullPathExists()) {
 
-          if (filtredDirs.size() == 1) {
-            wordProc.completePathFull();
-          } else if (filtredDirs.size() > 1) {
-            wordProc.completePath();
-          }
+          wordProc.completePath();
+
         } else if (wordProc.isFullPathExists() && wordProc.isFullPathEndSeparator()) {
-          
+
           wordProc.printDirs(wordProc.getFullpath());
 
         } else if (wordProc.isFullPathExists() && !wordProc.isFullPathEndSeparator()) {
