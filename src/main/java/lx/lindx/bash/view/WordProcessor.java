@@ -1,7 +1,13 @@
 package lx.lindx.bash.view;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import lx.lindx.bash.com.ListDirectory;
@@ -108,41 +114,6 @@ public class WordProcessor {
     return this.childPath;
   }
 
-  public void completePath() {
-
-    String pathElem = filtredDirs.get(0);
-
-    int elemLength = pathElem.length(); // 7 dev-libs
-    int childLength = childPath.length(); // 2 dev
-    int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
-
-    buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
-    buffView.shiftpos(appendlength);
-
-    termView.shiftCol(appendlength);
-
-    buffView.insertElem(SPTR);
-    buffView.shiftpos(1);
-
-    termView.print(buffView.getBufferFromPos());
-    termView.next();
-  }
-
-  public void completePath2() {
-
-    String pathElem = filtredDirs.get(0);
-
-    int elemLength = pathElem.length(); // 7 dev-libs
-    int childLength = childPath.length(); // 2 dev
-    int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
-
-    buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
-    buffView.shiftpos(appendlength);
-    termView.shiftCol(appendlength);
-
-    termView.print(buffView.getBufferFromPos());
-  }
-
   public void printDirs(final String fullPath) {
 
     System.out.println();
@@ -203,5 +174,60 @@ public class WordProcessor {
 
   public String getTmpPath() {
     return this.tmpPath;
+  }
+
+  public boolean isFullPathExists() {
+    return Files.exists(Paths.get(fullpath)) && Files.exists(Paths.get(parentPath));
+  }
+
+  public boolean isFullPathEndSeparator() {
+    return fullpath.endsWith(SPTR);
+  }
+
+  public void completePath() {
+
+    StringBuilder result = new StringBuilder();
+    char[] elem = filtredDirs.getDirs().get(0).toString().toCharArray();
+
+    boolean ch = true;
+
+    int i = 0;
+    while (i < elem.length && ch) {
+      for (Path c : filtredDirs.getDirs())
+        ch = c.toString().toCharArray()[i] != elem[i] ? false : true;
+      if (ch)
+        result.append(elem[i++]);
+    }
+
+    String appendSeq = result.toString().substring(childPath.length());
+    int appendlength = appendSeq.length();
+
+    buffView.insertElem(appendSeq);
+    buffView.shiftpos(appendlength);
+
+    termView.print(buffView.getBufferFromPos());
+
+    termView.shiftCol(appendlength - 1);
+    termView.next();
+  }
+
+  public void completePathFull() {
+
+    String pathElem = filtredDirs.get(0);
+
+    int elemLength = pathElem.length(); // 7 dev-libs
+    int childLength = childPath.length(); // 2 dev
+    int appendlength = elemLength - childLength; // 7 - 2 = 5; // -libs
+
+    buffView.insertElem(pathElem.substring(childLength)); // -libs // 5
+    buffView.shiftpos(appendlength);
+
+    termView.shiftCol(appendlength);
+
+    buffView.insertElem(SPTR);
+    buffView.shiftpos(1);
+
+    termView.print(buffView.getBufferFromPos());
+    termView.next();
   }
 }

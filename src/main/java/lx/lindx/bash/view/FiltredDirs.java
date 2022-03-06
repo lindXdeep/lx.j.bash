@@ -50,4 +50,7 @@ public class FiltredDirs {
     listFiltredDirs.clear();
   }
 
+  public boolean isStartsWith(int first, int seccond) {
+    return this.size() > 1 && this.get(first).startsWith(this.get(seccond));
+  }
 }

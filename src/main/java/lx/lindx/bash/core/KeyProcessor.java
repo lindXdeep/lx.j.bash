@@ -66,34 +66,26 @@ public class KeyProcessor {
 
         wordProc.readPathBeforePos();
 
-        if (!Files.exists(Paths.get(wordProc.getFullpath())) && Files.exists(Paths.get(wordProc.getParentpath()))) {
+        filtredDirs.setPath(wordProc.getParentpath());
+        filtredDirs.filterbBy(wordProc.getChildpath());
 
-          filtredDirs.setPath(wordProc.getParentpath());
-          filtredDirs.filterbBy(wordProc.getChildpath());
+        if (!wordProc.isFullPathExists()) {
 
           if (filtredDirs.size() == 1) {
-            wordProc.completePath();
-          } else if (filtredDirs.size() > 1 && filtredDirs.get(1).startsWith(filtredDirs.get(0))
-              && wordProc.getChildpath().length() > 1) {
-            wordProc.completePath2();
+            wordProc.completePathFull();
           } else if (filtredDirs.size() > 1) {
-            wordProc.printDirs(filtredDirs.getDirs());
+            wordProc.completePath();
           }
+        } else if (wordProc.isFullPathExists() && wordProc.isFullPathEndSeparator()) {
+          
+          wordProc.printDirs(wordProc.getFullpath());
 
-        } else if (Files.exists(Paths.get(wordProc.getFullpath()))) {
+        } else if (wordProc.isFullPathExists() && !wordProc.isFullPathEndSeparator()) {
 
-          if (wordProc.getFullpath().endsWith(sptr)) {
-            wordProc.printDirs(wordProc.getFullpath());
-          } else {
-
-            filtredDirs.setPath(wordProc.getParentpath());
-            filtredDirs.filterbBy(wordProc.getChildpath());
-
-            if (filtredDirs.size() > 1) {
-              wordProc.printDirs(filtredDirs.getDirs());
-            } else if (filtredDirs.size() == 1) {
-              wordProc.completePath();
-            }
+          if (filtredDirs.size() > 1) {
+            wordProc.printDirs(filtredDirs.getDirs());
+          } else if (filtredDirs.size() == 1) {
+            wordProc.completePath();
           }
         }
 
@@ -137,20 +129,12 @@ public class KeyProcessor {
     }
 
     Util.logKey(
-        "\nF:" + wordProc.getFullpath() +
-            "\nP:" + wordProc.getParentpath() +
-            "\nC:" + wordProc.getChildpath() + "\n");
+        "\nF:" + wordProc.getFullpath() + "\nP:" + wordProc.getParentpath() + "\nC:" + wordProc.getChildpath() + "\n");
 
     Util.logKey(null,
 
-        wordProc.getBuffer(),
-        wordProc.getTmpPath(),
-        wordProc.getBufferPos(),
-        wordProc.getBufferSize(),
-        wordProc.getLinelength(),
-        wordProc.getTermRow(),
-        wordProc.getTermCol(),
-        wordProc.getTermEnd(),
+        wordProc.getBuffer(), wordProc.getTmpPath(), wordProc.getBufferPos(), wordProc.getBufferSize(),
+        wordProc.getLinelength(), wordProc.getTermRow(), wordProc.getTermCol(), wordProc.getTermEnd(),
         wordProc.getSysCol());
   }
 }
