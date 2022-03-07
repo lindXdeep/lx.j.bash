@@ -7,28 +7,15 @@ import java.util.List;
 import lx.lindx.bash.com.ListDirectory;
 
 public class FiltredDirs {
+
   private List<Path> listFiltredDirs;
-  private ListDirectory ls;
   private String path;
 
-  public FiltredDirs(final ListDirectory ls) {
+  private ListDirectory ls;
+
+  public FiltredDirs(ListDirectory ls) {
     this.listFiltredDirs = new ArrayList<>();
     this.ls = ls;
-  }
-
-  public void setPath(String parentpath) {
-    this.path = parentpath;
-  }
-
-  public void filterbBy(final String mask) {
-
-    listFiltredDirs.clear();
-
-    for (Path p : ls.getDirs(path, false)) {
-      if (p.toString().startsWith(mask)) {
-        listFiltredDirs.add(p);
-      }
-    }
   }
 
   public int size() {
@@ -50,7 +37,18 @@ public class FiltredDirs {
     listFiltredDirs.clear();
   }
 
-  public boolean isStartsWith(int first, int seccond) {
-    return this.size() > 1 && this.get(first).startsWith(this.get(seccond));
+  public void setPath(final String path) {
+    this.path = path;
+  }
+
+  public void filterbBy(final String mask) {
+
+    listFiltredDirs.clear();
+
+    for (Path p : ls.getDirs(path, false)) {
+      if (p.toString().startsWith(mask)) {
+        listFiltredDirs.add(p);
+      }
+    }
   }
 }

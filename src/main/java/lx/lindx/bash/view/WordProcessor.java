@@ -1,56 +1,37 @@
 package lx.lindx.bash.view;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import lx.lindx.bash.com.ListDirectory;
 import lx.lindx.bash.core.Ps1;
-import lx.lindx.bash.sys.EnvironmentVariables;
 
 /**
  * Wordprocessor
  */
 public class WordProcessor {
 
-  private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
-
   private ConsoleView termView;
   private BufferView buffView;
 
   private Ps1 ps1;
 
-  private String workPath;
-  private String tmpPath;
-  private String fullpath;
-  private String parentPath;
-  private String childPath;
-
   private ListDirectory ls;
 
-  private FiltredDirs filtredDirs;
+  private PathParser pathParser;
 
-  public WordProcessor(final FiltredDirs filtredDirs) {
+  public WordProcessor() {
 
-    this.filtredDirs = filtredDirs;
+    this.ls = new ListDirectory();
 
-    termView = new ConsoleView();
-    buffView = new BufferView(termView);
+    this.ps1 = new Ps1();
+    this.termView = new ConsoleView(ps1);
+    this.buffView = new BufferView(termView);
 
-    ps1 = new Ps1();
-    workPath = ps1.getWorkingDirectory();
-
-    ls = new ListDirectory();
-
-    termView.setEdge(ps1.length() + 1);
-    termView.clearScreen();
-    termView.print(ps1);
+    this.pathParser = new PathParser(buffView);
+    this.pathParser.setPs1(ps1);
+    this.pathParser.setListDir(ls);
+    this.pathParser.setTerminalView(termView);
   }
 
   public void insertElem(final char key) {
@@ -82,142 +63,67 @@ public class WordProcessor {
     buffView.dropBuffer();
   }
 
-  public void readPathBeforePos() {
+  public void printResultLine() {
+    termView.shiftRow(ls.getNumRows() + 1);
+    termView.print(ps1, buffView.getbuffer());
+    termView.shiftCol(-1);
+    termView.next();
+  }
 
-    tmpPath = buffView.cutPathBeforePos();
-    fullpath = tmpPath.startsWith(SPTR) ? tmpPath : workPath.concat(SPTR).concat(tmpPath);
+  public void compleet() {
 
-    String subPaths = fullpath.endsWith(SPTR)
-        ? fullpath.substring(0, fullpath.length() - 1)
-        : fullpath;
+    pathParser.readPathBeforePos();
 
-    int idx = subPaths.lastIndexOf(SPTR);
+    if (!pathParser.isFullPathExists() ||
+        (pathParser.isFullPathExists() && !pathParser.isFullPathEndSeparator())) {
 
-    if (idx == -1) {
-      parentPath = SPTR;
-      childPath = "";
-    } else {
-      parentPath = subPaths.substring(0, ++idx);
-      childPath = subPaths.substring(idx);
+      pathParser.appendSequence();
+
+      if (pathParser.isPathEndsWithAppendSequence()) {
+        ls.byCols(pathParser.getFiltredDirs());
+        this.printResultLine();
+      }
+
+      pathParser.completePath();
+
+    } else if (pathParser.isFullPathExists() && pathParser.isFullPathEndSeparator()) {
+      ls.byCols(pathParser.getFullpath());
+      this.printResultLine();
     }
   }
 
+  /*--------forLog--------*/
+
   public String getFullpath() {
-    return fullpath;
+    return pathParser.getFullpath();
   }
 
   public String getParentpath() {
-    return this.parentPath;
+    return pathParser.getParentPath();
   }
 
   public String getChildpath() {
-    return this.childPath;
-  }
-
-  public void printDirs(final String fullPath) {
-
-    System.out.println();
-    ls.byCols(fullPath);
-
-    termView.shiftRow(ls.getNumRows() + 1);
-
-    termView.print(ps1);
-    termView.print(buffView.getbuffer());
-    termView.shiftCol(-1);
-    termView.next();
-  }
-
-  public void printDirs(List<Path> dirs) {
-
-    System.out.println();
-    ls.byCols(dirs);
-
-    termView.shiftRow(ls.getNumRows() + 1);
-
-    termView.print(ps1);
-    termView.print(buffView.getbuffer());
-    termView.shiftCol(-1);
-    termView.next();
+    return pathParser.getChildPath();
   }
 
   public String getBuffer() {
     return buffView.getbuffer().toString();
   }
 
-  public int getBufferPos() {
-    return buffView.getPos();
-  }
-
-  public int getBufferSize() {
-    return buffView.getSize();
-  }
-
-  public int getTermRow() {
-    return termView.getRow();
-  }
-
-  public int getTermCol() {
-    return termView.getCol();
-  }
-
-  public int getTermEnd() {
-    return termView.toEnd();
-  }
-
-  public int getSysCol() {
-    return termView.getSysCol();
-  }
-
-  public int getLinelength() {
-    return termView.getLinelength();
-  }
-
   public String getTmpPath() {
-    return this.tmpPath;
+    return pathParser.getTmpPath();
   }
 
-  public boolean isFullPathExists() {
-    return Files.exists(Paths.get(fullpath)) && Files.exists(Paths.get(parentPath));
-  }
+  public int[] getPosInfo() {
 
-  public boolean isFullPathEndSeparator() {
-    return fullpath.endsWith(SPTR);
-  }
-
-  public void completePath() {
-
-    StringBuilder result = new StringBuilder();
-    char[] elem = filtredDirs.getDirs().get(0).toString().toCharArray();
-    String appendSeq = "";
-
-    if (tmpPath.endsWith(appendSeq) && filtredDirs.size() > 1) {
-      this.printDirs(filtredDirs.getDirs());
-    }
-
-    if (filtredDirs.size() > 1) {
-      boolean ch = true;
-
-      int i = 0;
-      while (i < elem.length && ch) {
-        for (Path c : filtredDirs.getDirs())
-          ch = c.toString().toCharArray()[i] != elem[i] ? false : true;
-        if (ch)
-          result.append(elem[i++]);
-      }
-      appendSeq = result.toString().substring(childPath.length());
-
-    } else if (filtredDirs.size() == 1) {
-      appendSeq = filtredDirs.getDirs().get(0).toString().concat(SPTR).substring(childPath.length());
-    }
-
-    int appendlength = appendSeq.length();
-
-    buffView.insertElem(appendSeq);
-    buffView.shiftpos(appendlength);
-
-    termView.print(buffView.getBufferFromPos());
-
-    termView.shiftCol(appendlength - 1);
-    termView.next();
+    return new int[] {
+        buffView.getPos(),
+        buffView.getSize(),
+        termView.getLinelength(),
+        termView.getRow(),
+        termView.getCol(),
+        termView.toEnd(),
+        termView.getSysCol()
+    };
   }
 }

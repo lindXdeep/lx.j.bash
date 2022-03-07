@@ -19,34 +19,16 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_RIGHT;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
-import lx.lindx.bash.com.ChangeDirectory;
-import lx.lindx.bash.com.ListDirectory;
-import lx.lindx.bash.sys.EnvironmentVariables;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
-import lx.lindx.bash.view.FiltredDirs;
 import lx.lindx.bash.view.WordProcessor;
 
 public class KeyProcessor {
 
-  private String sptr;
-
   private WordProcessor wordProc;
 
-  private ListDirectory ls;
-  private ChangeDirectory cd;
-
-  private FiltredDirs filtredDirs;
-
   public KeyProcessor() {
-
-    ls = new ListDirectory();
-    cd = new ChangeDirectory();
-
-    sptr = EnvironmentVariables.FILE_SEPARATOR;
-
-    filtredDirs = new FiltredDirs(ls);
-    wordProc = new WordProcessor(filtredDirs);
+    wordProc = new WordProcessor();
   }
 
   public void proccess(final String key) {
@@ -61,27 +43,7 @@ public class KeyProcessor {
 
         Terminal.saneMode();
 
-        wordProc.readPathBeforePos();
-
-        filtredDirs.setPath(wordProc.getParentpath());
-        filtredDirs.filterbBy(wordProc.getChildpath());
-
-        if (!wordProc.isFullPathExists()) {
-
-          wordProc.completePath();
-
-        } else if (wordProc.isFullPathExists() && wordProc.isFullPathEndSeparator()) {
-
-          wordProc.printDirs(wordProc.getFullpath());
-
-        } else if (wordProc.isFullPathExists() && !wordProc.isFullPathEndSeparator()) {
-
-          if (filtredDirs.size() > 1) {
-            wordProc.printDirs(filtredDirs.getDirs());
-          } else if (filtredDirs.size() == 1) {
-            wordProc.completePath();
-          }
-        }
+        wordProc.compleet();
 
         Terminal.rawMode();
 
@@ -126,9 +88,14 @@ public class KeyProcessor {
         "\nF:" + wordProc.getFullpath() + "\nP:" + wordProc.getParentpath() + "\nC:" + wordProc.getChildpath() + "\n");
 
     Util.logKey(null,
-
-        wordProc.getBuffer(), wordProc.getTmpPath(), wordProc.getBufferPos(), wordProc.getBufferSize(),
-        wordProc.getLinelength(), wordProc.getTermRow(), wordProc.getTermCol(), wordProc.getTermEnd(),
-        wordProc.getSysCol());
+        wordProc.getBuffer(),
+        wordProc.getTmpPath(),
+        wordProc.getPosInfo()[0],
+        wordProc.getPosInfo()[1],
+        wordProc.getPosInfo()[2],
+        wordProc.getPosInfo()[3],
+        wordProc.getPosInfo()[4],
+        wordProc.getPosInfo()[5],
+        wordProc.getPosInfo()[6]);
   }
 }

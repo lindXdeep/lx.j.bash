@@ -4,6 +4,7 @@ import static lx.lindx.bash.sys.TerminalSequences.CLS;
 import static lx.lindx.bash.sys.TerminalSequences.CURR_UP_LEFT;
 import static lx.lindx.bash.sys.TerminalSequences.MOV_CURR_R_C;
 
+import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.term.Terminal;
 
 public class ConsoleView {
@@ -15,7 +16,12 @@ public class ConsoleView {
 
   private int sysCol; // system terminal width by cols
 
-  public ConsoleView() {
+  public ConsoleView(Ps1 ps1) {
+
+    edge = ps1.length() + 1;
+    this.clearScreen();
+    this.print(ps1);
+
     sysCol = Terminal.getColumns();
     col = edge;
   }

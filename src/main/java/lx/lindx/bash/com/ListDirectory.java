@@ -58,6 +58,8 @@ public class ListDirectory {
 
     int i = 0;
 
+    System.out.println();
+
     for (Path path : dirs) {
       elems[i++] = path;
       int currFileLength = path.toString().length();

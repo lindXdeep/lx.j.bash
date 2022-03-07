@@ -11,7 +11,6 @@ public class Util {
 
   private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
 
-
   static {
     LOGGER = LogManager.getLogger(Util.class.getSuperclass().getName());
     KEYLOG = new KeyLogger();

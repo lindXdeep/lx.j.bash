@@ -5,8 +5,6 @@ import lx.lindx.bash.sys.EnvironmentVariables;
 
 public class BufferView {
 
-  private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
-
   private ConsoleView termView;
 
   private StringBuffer buffer;
