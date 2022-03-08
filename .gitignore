@@ -2,3 +2,5 @@ out/
 bin/
 log/
 .keylog
+.tmp
+connect.png

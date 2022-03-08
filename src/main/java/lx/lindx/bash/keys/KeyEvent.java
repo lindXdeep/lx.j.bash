@@ -1,4 +1,4 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash.keys;
 
 import static lx.lindx.bash.sys.EscapeSequences.KEY_BACKSPACE;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_DELETE;
