@@ -1,4 +1,4 @@
-package lx.lindx.bash.com;
+package lx.lindx.bash.api;
 
 import lx.lindx.bash.sys.EnvironmentVariables;
 

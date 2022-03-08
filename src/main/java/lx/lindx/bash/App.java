@@ -1,7 +1,5 @@
 package lx.lindx.bash;
 
-import lx.lindx.bash.core.Shell;
-
 /**
  * App
  */

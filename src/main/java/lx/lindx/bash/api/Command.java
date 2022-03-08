@@ -1,4 +1,4 @@
-package lx.lindx.bash.com;
+package lx.lindx.bash.api;
 
 public interface Command {
   

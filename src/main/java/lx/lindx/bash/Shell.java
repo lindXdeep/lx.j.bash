@@ -1,8 +1,11 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash;
 
 import java.io.Console;
 import java.io.IOException;
 
+import lx.lindx.bash.keys.KeyEvent;
+import lx.lindx.bash.keys.KeyListener;
+import lx.lindx.bash.keys.KeyProcessor;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
 

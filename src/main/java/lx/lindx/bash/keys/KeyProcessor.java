@@ -1,4 +1,4 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash.keys;
 
 import static lx.lindx.bash.sys.EscapeSequences.KEY_BACKSPACE;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_DELETE;
@@ -19,22 +19,22 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_RIGHT;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
+import lx.lindx.bash.core.LineHandler;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
-import lx.lindx.bash.view.WordProcessor;
 
 public class KeyProcessor {
 
-  private WordProcessor wordProc;
+  private LineHandler lineHandler;
 
   public KeyProcessor() {
-    wordProc = new WordProcessor();
+    lineHandler = new LineHandler();
   }
 
   public void proccess(final String key) {
 
     if (key.length() == 1) {
-      wordProc.insertElem(key.charAt(0));
+      lineHandler.insertElem(key.charAt(0));
     } else {
 
       // --------- START TAB --------- //
@@ -43,14 +43,14 @@ public class KeyProcessor {
 
         Terminal.saneMode();
 
-        wordProc.compleet();
+        lineHandler.compleet();
 
         Terminal.rawMode();
 
       } else if (key.equals(KEY_ENTER.name())) {
-        wordProc.enter();
+        lineHandler.enter();
       } else if (key.equals(KEY_BACKSPACE.name())) {
-        wordProc.deletePrevChar();
+        lineHandler.deletePrevChar();
       } else if (key.equals(KEY_F1.name())) {
 
       } else if (key.equals(KEY_F2.name())) {
@@ -72,30 +72,32 @@ public class KeyProcessor {
       } else if (key.equals(KEY_INSERT.name())) {
         // System.out.print(KEY_INSERT);
       } else if (key.equals(KEY_DELETE.name())) {
-        wordProc.deleteNextChar();
+        lineHandler.deleteNextChar();
       } else if (key.equals(KEY_UP.name())) {
         // System.out.print(KEY_UP);
       } else if (key.equals(KEY_DOWN.name())) {
 
       } else if (key.equals(KEY_RIGHT.name())) {
-        wordProc.moveRight();
+        lineHandler.moveRight();
       } else if (key.equals(KEY_LEFT.name())) {
-        wordProc.moveLeft();
+        lineHandler.moveLeft();
       }
     }
 
     Util.logKey(
-        "\nF:" + wordProc.getFullpath() + "\nP:" + wordProc.getParentpath() + "\nC:" + wordProc.getChildpath() + "\n");
+        "\nF:" + lineHandler.getLogPaths()[0] + "\nP:" +
+            lineHandler.getLogPaths()[1] + "\nC:" +
+            lineHandler.getLogPaths()[2] + "\n");
 
     Util.logKey(null,
-        wordProc.getBuffer(),
-        wordProc.getTmpPath(),
-        wordProc.getPosInfo()[0],
-        wordProc.getPosInfo()[1],
-        wordProc.getPosInfo()[2],
-        wordProc.getPosInfo()[3],
-        wordProc.getPosInfo()[4],
-        wordProc.getPosInfo()[5],
-        wordProc.getPosInfo()[6]);
+        lineHandler.getBuffer(),
+        lineHandler.getTmpPath(),
+        lineHandler.getLogPosInfo()[0],
+        lineHandler.getLogPosInfo()[1],
+        lineHandler.getLogPosInfo()[2],
+        lineHandler.getLogPosInfo()[3],
+        lineHandler.getLogPosInfo()[4],
+        lineHandler.getLogPosInfo()[5],
+        lineHandler.getLogPosInfo()[6]);
   }
 }

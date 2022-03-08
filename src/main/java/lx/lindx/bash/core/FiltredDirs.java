@@ -1,10 +1,10 @@
-package lx.lindx.bash.view;
+package lx.lindx.bash.core;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import lx.lindx.bash.com.ListDirectory;
+import lx.lindx.bash.api.ListDirectory;
 
 public class FiltredDirs {
 
@@ -23,9 +23,8 @@ public class FiltredDirs {
   }
 
   public String get(int index) {
-    if (index <= listFiltredDirs.size() && index >= 0) {
+    if (index >= 0 && index <= listFiltredDirs.size())
       return listFiltredDirs.get(index).toString();
-    }
     throw new RuntimeException();
   }
 

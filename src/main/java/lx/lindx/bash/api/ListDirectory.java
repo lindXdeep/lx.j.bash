@@ -1,4 +1,4 @@
-package lx.lindx.bash.com;
+package lx.lindx.bash.api;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

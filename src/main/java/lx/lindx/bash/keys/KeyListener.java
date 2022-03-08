@@ -1,4 +1,4 @@
-package lx.lindx.bash.core;
+package lx.lindx.bash.keys;
 
 import java.io.IOException;
 import java.io.Reader;

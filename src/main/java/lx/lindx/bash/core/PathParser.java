@@ -1,13 +1,14 @@
-package lx.lindx.bash.view;
+package lx.lindx.bash.core;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import lx.lindx.bash.com.ListDirectory;
-import lx.lindx.bash.core.Ps1;
+import lx.lindx.bash.api.ListDirectory;
 import lx.lindx.bash.sys.EnvironmentVariables;
+import lx.lindx.bash.view.Buffer;
+import lx.lindx.bash.view.Console;
 
 public class PathParser {
 
@@ -21,16 +22,16 @@ public class PathParser {
   private String childPath;
 
   private Ps1 ps1;
-  private BufferView bufferView;
+  private Buffer bufferView;
 
-  private ConsoleView termView;
+  private Console termView;
   private ListDirectory ls;
 
   private String appendSeq;
 
   private int appendlength;
 
-  public PathParser(BufferView buffView) {
+  public PathParser(Buffer buffView) {
     this.bufferView = buffView;
   }
 
@@ -43,7 +44,7 @@ public class PathParser {
     this.filtredDirs = new FiltredDirs(ls);
   }
 
-  public void setTerminalView(ConsoleView termView) {
+  public void setTerminalView(Console termView) {
     this.termView = termView;
   }
 
@@ -95,7 +96,7 @@ public class PathParser {
   public String getAppendSequence() {
 
     StringBuilder result = new StringBuilder();
-    char[] elem = filtredDirs.get(0).toCharArray();
+    char[] elem = (filtredDirs.size() == 0 ? "" : filtredDirs.get(0)).toCharArray();
     String appendSeq = "";
 
     if (filtredDirs.size() > 1) {
@@ -143,7 +144,7 @@ public class PathParser {
     return this.childPath;
   }
 
-  public BufferView getBufferView() {
+  public Buffer getBufferView() {
     return this.bufferView;
   }
 

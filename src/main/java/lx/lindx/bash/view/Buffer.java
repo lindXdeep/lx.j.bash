@@ -3,9 +3,9 @@ package lx.lindx.bash.view;
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.sys.EnvironmentVariables;
 
-public class BufferView {
+public class Buffer {
 
-  private ConsoleView termView;
+  private Console termView;
 
   private StringBuffer buffer;
   private int bufPos;
@@ -13,7 +13,7 @@ public class BufferView {
 
   private Ps1 ps1;
 
-  public BufferView(ConsoleView termView) {
+  public Buffer(Console termView) {
     this.buffer = new StringBuffer();
     this.termView = termView;
 
