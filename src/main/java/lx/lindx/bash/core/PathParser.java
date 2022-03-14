@@ -3,7 +3,7 @@ package lx.lindx.bash.core;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.Set;
 
 import lx.lindx.bash.api.ListDirectory;
 import lx.lindx.bash.sys.EnvironmentVariables;
@@ -12,7 +12,7 @@ import lx.lindx.bash.view.Console;
 
 public class PathParser {
 
-  private final static String SPTR = EnvironmentVariables.FILE_SEPARATOR;
+  private static final String SPTR = EnvironmentVariables.FILE_SEPARATOR;
 
   private FiltredDirs filtredDirs;
 
@@ -79,7 +79,7 @@ public class PathParser {
     return tmpPath.endsWith(appendSeq) && filtredDirs.size() > 1;
   }
 
-  public List<Path> getFiltredDirs() {
+  public Set<Path> getFiltredDirs() {
     return filtredDirs.getDirs();
   }
 
@@ -150,5 +150,9 @@ public class PathParser {
 
   public int getChildLength() {
     return childPath.length();
+  }
+
+  public boolean isBuffEmpty() {
+    return bufferView.getSize() == 0;
   }
 }

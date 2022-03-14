@@ -1,158 +1,81 @@
 package lx.lindx.bash.api;
 
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
+import lx.lindx.bash.api.util.DirectoryScanner;
+import lx.lindx.bash.api.util.ItemFilter;
+import lx.lindx.bash.api.util.ItemFilter.Type;
 import lx.lindx.bash.sys.EnvironmentVariables;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
 
 public class ListDirectory {
 
-  private Path[] paths;
+  private final String sptr = EnvironmentVariables.FILE_SEPARATOR;
+
+  private DirectoryScanner directoryScanner;
 
   private int sysColumns;
 
-  private int minFileNameLength;
-  private int numFiles;
-  private int numRows;
+  private int itemCount;
 
-  private final String nameCommand = "ls";
-  private final String sptr = EnvironmentVariables.FILE_SEPARATOR;
+  private int itemRows;
 
-  private class ComparatorIgnoreSpecialChars implements Comparator<Path> {
-
-    private String mask = "[^A-Za-zА-Яа-я0-9]";
-
-    @Override
-    public int compare(Path o1, Path o2) {
-      String l = o1.toString().replaceAll(mask, "");
-      String r = o2.toString().replaceAll(mask, "");
-      return l.compareTo(r);
-    }
-  }
+  private int itemCols;
 
   public ListDirectory() {
-    sysColumns = Terminal.getColumns();
+    this.sysColumns = Terminal.getColumns();
+    this.directoryScanner = new DirectoryScanner();
   }
 
-  // public void byRows(final String path) {
-  // print(readDir(path), 1);
-  // }
-
-  public void byCols(final String path) {
-    print(getDirs(path, false), (sysColumns / minFileNameLength));
+  public Set<Path> getDirs(final String path, boolean absolutePath) {
+    return directoryScanner.readFolder(path, ItemFilter.get(Type.FOLDERS), absolutePath);
   }
 
-  public void byCols(List<Path> dirs) {
+  public Set<Path> getFiles(final String path, boolean absolutePath) {
+    return directoryScanner.readFolder(path, ItemFilter.get(Type.FILES), absolutePath);
+  }
 
-    Path[] elems = new Path[dirs.size()];
+  public Set<Path> getAll(final String path, boolean absolutePath) {
+    return directoryScanner.readFolder(path, ItemFilter.get(Type.ALL), absolutePath);
+  }
 
-    int i = 0;
+  public void printDirsByCols(final String path) {
+    print(getDirs(path, false), directoryScanner.getItemMinNameLength());
+  }
+
+  public void printDirsByCols(Set<Path> filtredDirs) {
+    print(filtredDirs, directoryScanner.readItems(filtredDirs, false).getItemMinNameLength());
+  }
+
+  private void print(final Set<Path> dirs, int itemMinNameLength) {
+
+    this.itemCount = dirs.size();
+    this.itemCols = (sysColumns / directoryScanner.getItemMinNameLength()) - 1;
+
+    int rows = itemCount / itemCols;
+
+    this.itemRows = rows == 0 ? 1 : (rows == 1 && itemCount > itemCols) ? rows + 1 : rows;
 
     System.out.println();
 
-    for (Path path : dirs) {
-      elems[i++] = path;
-      int currFileLength = path.toString().length();
-      minFileNameLength = currFileLength > minFileNameLength ? currFileLength : minFileNameLength;
-    }
-
-    print(elems, (sysColumns / minFileNameLength));
-  }
-
-  private void print(final Path[] dirs, int numCols) {
-
-    numFiles = dirs.length;
-    numRows = (numFiles / numCols) == 0 ? 1 : (numFiles / numCols);
-
-    for (int i = 0; i < numRows; i++) {
-      for (int j = i; j < numFiles; j += numRows) {
-        System.out.printf(("%-" + (minFileNameLength - 2)).concat("s "), dirs[j].toString() + sptr);
+    for (int i = 0; i < itemRows; i++) {
+      for (int j = i; j < itemCount; j += itemRows) {
+        System.out.printf(("%-" + (itemMinNameLength + 1)).concat("s "),
+            dirs.toArray(new Path[itemCount])[j].toString() + sptr);
       }
       System.out.println();
     }
 
     Util.log("Columns: " + sysColumns + ", " +
-        "FileLength: " + minFileNameLength + ", " +
-        "Cols: " + numCols + " / Rows: " + numRows);
+        "NumCount: " + itemCount + ", " +
+        "FileLength: " + itemMinNameLength + ", " +
+        "Cols: " + itemCols + " / Rows: " + itemRows);
+
   }
-
-  public Path[] getDirs(final String path, boolean absolutePath) {
-    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
-      @Override
-      public boolean accept(Path entry) throws IOException {
-        return Files.isDirectory(entry);
-      }
-    };
-
-    return readFolder(path, filter, absolutePath);
-  }
-
-  public Path[] getFiles(final String path, boolean absolutePath) {
-    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
-      @Override
-      public boolean accept(Path entry) throws IOException {
-        return !Files.isDirectory(entry);
-      }
-    };
-
-    return readFolder(path, filter, absolutePath);
-  }
-
-  public Path[] getAll(final String path, boolean absolutePath) {
-    DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
-      @Override
-      public boolean accept(Path entry) throws IOException {
-        return Files.exists(entry);
-      }
-    };
-
-    return readFolder(path, filter, absolutePath);
-  }
-
-  private Path[] readFolder(final String path, DirectoryStream.Filter<Path> filter, boolean absolutePath) {
-
-    Path dirSrc = Paths.get(path);
-
-    Set<Path> paths = new TreeSet<>(new ComparatorIgnoreSpecialChars());
-
-    if (Files.exists(dirSrc) && Files.isDirectory(dirSrc)) {
-
-      try (DirectoryStream<Path> dir = Files.newDirectoryStream(dirSrc, filter)) {
-
-        for (Path p : dir) {
-          int currFileLength = p.toString().length();
-          minFileNameLength = currFileLength > minFileNameLength ? currFileLength : minFileNameLength;
-          paths.add(absolutePath ? p : p.getFileName());
-        }
-
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return paths.toArray(new Path[paths.size()]);
-  }
-
-  // @Override
-  // public int getMaxLengthElement() {
-  // return this.minFileNameLength;
-  // }
-
-  // @Override
-  // public int getMinLengthElement() {
-  // return this.minFileNameLength;
-  // }
 
   public int getNumRows() {
-    return this.numRows;
+    return this.itemRows;
   }
 }

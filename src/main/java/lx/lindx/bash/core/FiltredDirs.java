@@ -1,20 +1,20 @@
 package lx.lindx.bash.core;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import lx.lindx.bash.api.ListDirectory;
 
 public class FiltredDirs {
 
-  private List<Path> listFiltredDirs;
+  private Set<Path> listFiltredDirs;
   private String path;
 
   private ListDirectory ls;
 
   public FiltredDirs(ListDirectory ls) {
-    this.listFiltredDirs = new ArrayList<>();
+    this.listFiltredDirs = new TreeSet<>();
     this.ls = ls;
   }
 
@@ -24,11 +24,12 @@ public class FiltredDirs {
 
   public String get(int index) {
     if (index >= 0 && index <= listFiltredDirs.size())
-      return listFiltredDirs.get(index).toString();
+      return listFiltredDirs.toArray()[index].toString();
+
     throw new RuntimeException();
   }
 
-  public List<Path> getDirs() {
+  public Set<Path> getDirs() {
     return this.listFiltredDirs;
   }
 

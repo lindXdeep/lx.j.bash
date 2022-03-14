@@ -1,7 +1,6 @@
 package lx.lindx.bash.view;
 
 import lx.lindx.bash.core.Ps1;
-import lx.lindx.bash.sys.EnvironmentVariables;
 
 public class Buffer {
 

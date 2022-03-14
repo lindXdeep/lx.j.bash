@@ -1,4 +1,4 @@
-package lx.lindx.bash.keys;
+package lx.lindx.bash.core;
 
 import static lx.lindx.bash.sys.EscapeSequences.KEY_BACKSPACE;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_DELETE;
@@ -19,7 +19,6 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_RIGHT;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
-import lx.lindx.bash.core.LineHandler;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.Util;
 

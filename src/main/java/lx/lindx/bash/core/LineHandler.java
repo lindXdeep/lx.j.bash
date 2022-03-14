@@ -75,14 +75,14 @@ public class LineHandler {
       pathParser.appendSequence();
 
       if (pathParser.isPathEndsWithAppendSequence()) {
-        ls.byCols(pathParser.getFiltredDirs());
+        ls.printDirsByCols(pathParser.getFiltredDirs());
         this.printResultLine();
       }
 
       pathParser.completePath();
 
-    } else if (pathParser.isFullPathExists() && pathParser.isFullPathEndSeparator()) {
-      ls.byCols(pathParser.getFullpath());
+    } else if (pathParser.isFullPathExists() && pathParser.isFullPathEndSeparator() && !pathParser.isBuffEmpty()) {
+      ls.printDirsByCols(pathParser.getFullpath());
       this.printResultLine();
     }
   }
