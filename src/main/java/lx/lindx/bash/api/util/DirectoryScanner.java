@@ -54,7 +54,6 @@ public class DirectoryScanner {
     if (!filtredDirs.isEmpty()) {
       addElements(filtredDirs.iterator(), absolutePath);
     }
-
     return this;
   }
 
@@ -69,9 +68,9 @@ public class DirectoryScanner {
     while (iterator.hasNext()) {
 
       Path p = iterator.next();
-
-      setFileNameLength(absolutePath ? p.toString().length() : p.getFileName().toString().length());
-      resultElements.add(absolutePath ? p : p.getFileName());
+      String path = absolutePath ? p.toString() : p.getFileName().toString();
+      setFileNameLength(path.length());
+      resultElements.add(Paths.get(path));
     }
 
     this.itemNumCount = resultElements.size();

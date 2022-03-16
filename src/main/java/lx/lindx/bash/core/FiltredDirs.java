@@ -23,9 +23,9 @@ public class FiltredDirs {
   }
 
   public String get(int index) {
+
     if (index >= 0 && index <= listFiltredDirs.size())
       return listFiltredDirs.toArray()[index].toString();
-
     throw new RuntimeException();
   }
 

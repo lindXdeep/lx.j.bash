@@ -1,5 +1,6 @@
 package lx.lindx.bash.view;
 
+import lx.lindx.bash.api.util.EscapeCharacter;
 import lx.lindx.bash.core.Ps1;
 
 public class Buffer {
@@ -98,13 +99,17 @@ public class Buffer {
     if (buffer.length() < 1)
       return "";
 
-    String str = buffer.substring(0, bufPos);
-    int idx = str.lastIndexOf(32);
+    char[] tmp = buffer.substring(0, bufPos).toCharArray();
 
-    if (idx != -1) {
-      return str.substring(idx + 1, bufPos);
+    int i = tmp.length;
+    while (i > 0) {
+      if (tmp[--i] == 32 && tmp[i - 1] != 92) {
+        break;
+      }
     }
-    return str.substring(0, bufPos);
+
+    return EscapeCharacter.uncheck(
+        buffer.substring(i != 0 ? ++i : i, bufPos));
   }
 
   public String getBufferFromPos() {

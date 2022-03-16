@@ -1,5 +1,6 @@
 package lx.lindx.bash.core;
 
+import lx.lindx.bash.api.ChangeDirectory;
 import lx.lindx.bash.api.ListDirectory;
 import lx.lindx.bash.view.Buffer;
 import lx.lindx.bash.view.Console;
@@ -12,12 +13,15 @@ public class LineHandler {
   private Ps1 ps1;
 
   private ListDirectory ls;
+  private ChangeDirectory cd;
 
   private PathParser pathParser;
+  private CommandParser commandParser;
 
   public LineHandler() {
 
     this.ls = new ListDirectory();
+    this.cd = new ChangeDirectory();
 
     this.ps1 = new Ps1();
     this.console = new Console(ps1);
@@ -27,6 +31,8 @@ public class LineHandler {
     this.pathParser.setPs1(ps1);
     this.pathParser.setListDir(ls);
     this.pathParser.setTerminalView(console);
+
+    this.commandParser = new CommandParser(buffer);
   }
 
   public void insertElem(final char key) {
@@ -54,6 +60,8 @@ public class LineHandler {
     console.setEdge(ps1.length() + 1);
     console.print("\n\r", ps1);
     console.newLine();
+
+    commandParser.getAllComands();
 
     buffer.dropBuffer();
   }

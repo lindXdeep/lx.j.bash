@@ -72,7 +72,6 @@ public class ListDirectory {
         "NumCount: " + itemCount + ", " +
         "FileLength: " + itemMinNameLength + ", " +
         "Cols: " + itemCols + " / Rows: " + itemRows);
-
   }
 
   public int getNumRows() {
