@@ -2,6 +2,9 @@ package lx.lindx.bash.core;
 
 import lx.lindx.bash.api.ChangeDirectory;
 import lx.lindx.bash.api.ListDirectory;
+import lx.lindx.bash.parser.Command;
+import lx.lindx.bash.parser.CommandParser;
+import lx.lindx.bash.util.Util;
 import lx.lindx.bash.view.Buffer;
 import lx.lindx.bash.view.Console;
 
@@ -16,7 +19,7 @@ public class LineHandler {
   private ChangeDirectory cd;
 
   private PathParser pathParser;
-  private CommandParser commandParser;
+  private CommandParser comParser;
 
   public LineHandler() {
 
@@ -32,7 +35,7 @@ public class LineHandler {
     this.pathParser.setListDir(ls);
     this.pathParser.setTerminalView(console);
 
-    this.commandParser = new CommandParser(buffer);
+    this.comParser = new CommandParser();
   }
 
   public void insertElem(final char key) {
@@ -57,18 +60,41 @@ public class LineHandler {
 
   public void enter() {
 
-    console.setEdge(ps1.length() + 1);
-    console.print("\n\r", ps1);
-    console.newLine();
+    if (buffer.toString().endsWith("\\")) {
 
-    commandParser.getAllComands();
+      console.setEdge(1);
+      console.newLineAndReturnСarriage();
+      buffer.deletePrevChar();
+      console.next();
+      console.print(">");
+      console.shiftCol(1);
 
-    buffer.dropBuffer();
+    } else {
+
+      comParser.setCommandLine(buffer);
+
+      while (comParser.hasNextCommand()) {
+
+        Command command = new Executor(comParser.nextCommand()).make();
+
+        System.out.println("[" + command + "][" + command.getOperation() + "]" + "["
+            + command.getState());
+
+        if (!command.getState())
+          break;
+      }
+
+      console.setEdge(ps1.length() + 1);
+      console.print("\n\r", ps1);
+      console.newLine();
+
+      buffer.dropBuffer();
+    }
   }
 
   public void printResultLine() {
     console.shiftRow(ls.getNumRows() + 1);
-    console.print(ps1, buffer.getbuffer());
+    console.print(ps1, buffer);
     console.shiftCol(-1);
     console.next();
   }
@@ -95,34 +121,22 @@ public class LineHandler {
     }
   }
 
-  /*--------forLog--------*/
+  public void makeLog() {
 
-  public String[] getLogPaths() {
-    return new String[] {
-        pathParser.getFullpath(),
-        pathParser.getParentPath(),
-        pathParser.getChildPath()
-    };
-  }
+    Util.logKey(
+        "\nF:" + pathParser.getFullpath() + "\nP:" +
+            pathParser.getParentPath() + "\nC:" +
+            pathParser.getChildPath() + "\n");
 
-  public String getBuffer() {
-    return buffer.getbuffer().toString();
-  }
-
-  public String getTmpPath() {
-    return pathParser.getTmpPath();
-  }
-
-  public int[] getLogPosInfo() {
-
-    return new int[] {
+    Util.logKey(null,
+        buffer.toString(),
+        pathParser.getTmpPath(),
         buffer.getPos(),
         buffer.getSize(),
         console.getLinelength(),
         console.getRow(),
         console.getCol(),
         console.toEnd(),
-        console.getSysCol()
-    };
+        console.getSysCol());
   }
 }

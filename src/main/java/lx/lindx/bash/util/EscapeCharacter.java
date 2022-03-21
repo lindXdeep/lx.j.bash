@@ -1,7 +1,6 @@
-package lx.lindx.bash.api.util;
+package lx.lindx.bash.util;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 

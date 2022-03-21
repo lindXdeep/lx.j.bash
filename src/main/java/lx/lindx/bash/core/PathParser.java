@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 import lx.lindx.bash.api.ListDirectory;
-import lx.lindx.bash.api.util.EscapeCharacter;
 import lx.lindx.bash.sys.EnvironmentVariables;
+import lx.lindx.bash.util.EscapeCharacter;
 import lx.lindx.bash.util.Util;
 import lx.lindx.bash.view.Buffer;
 import lx.lindx.bash.view.Console;
@@ -51,7 +51,7 @@ public class PathParser {
   }
 
   public void readPathBeforePos() {
-    
+
     tmpPath = bufferView.cutPathBeforePos();
 
     Util.log("tmp::" + tmpPath);

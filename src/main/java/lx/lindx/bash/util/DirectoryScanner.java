@@ -1,4 +1,4 @@
-package lx.lindx.bash.api.util;
+package lx.lindx.bash.util;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import lx.lindx.bash.term.Terminal;
-import lx.lindx.bash.util.Util;
 
 public class DirectoryScanner {
 

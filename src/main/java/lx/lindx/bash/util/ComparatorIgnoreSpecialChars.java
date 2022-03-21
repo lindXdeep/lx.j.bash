@@ -1,4 +1,4 @@
-package lx.lindx.bash.api.util;
+package lx.lindx.bash.util;
 
 import java.nio.file.Path;
 import java.util.Comparator;

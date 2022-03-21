@@ -20,7 +20,6 @@ import static lx.lindx.bash.sys.EscapeSequences.KEY_TAB;
 import static lx.lindx.bash.sys.EscapeSequences.KEY_UP;
 
 import lx.lindx.bash.term.Terminal;
-import lx.lindx.bash.util.Util;
 
 public class KeyProcessor {
 
@@ -83,20 +82,6 @@ public class KeyProcessor {
       }
     }
 
-    Util.logKey(
-        "\nF:" + lineHandler.getLogPaths()[0] + "\nP:" +
-            lineHandler.getLogPaths()[1] + "\nC:" +
-            lineHandler.getLogPaths()[2] + "\n");
-
-    Util.logKey(null,
-        lineHandler.getBuffer(),
-        lineHandler.getTmpPath(),
-        lineHandler.getLogPosInfo()[0],
-        lineHandler.getLogPosInfo()[1],
-        lineHandler.getLogPosInfo()[2],
-        lineHandler.getLogPosInfo()[3],
-        lineHandler.getLogPosInfo()[4],
-        lineHandler.getLogPosInfo()[5],
-        lineHandler.getLogPosInfo()[6]);
+    lineHandler.makeLog();
   }
 }
