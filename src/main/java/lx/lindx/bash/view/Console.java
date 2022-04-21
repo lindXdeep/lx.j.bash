@@ -4,6 +4,8 @@ import static lx.lindx.bash.sys.TerminalSequences.CLS;
 import static lx.lindx.bash.sys.TerminalSequences.CURR_UP_LEFT;
 import static lx.lindx.bash.sys.TerminalSequences.MOV_CURR_R_C;
 
+import javax.swing.tree.RowMapper;
+
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.term.Terminal;
 
@@ -18,9 +20,9 @@ public class Console {
 
   public Console(Ps1 ps1) {
 
-    edge = ps1.length() + 1;
+    edge = ps1.length() + 2;
     this.clearScreen();
-    this.print(ps1);
+    this.print(ps1 + " ");
 
     sysCol = Terminal.getColumns();
     col = edge;
@@ -77,11 +79,13 @@ public class Console {
   public void newLine() {
     move(++row, col = edge);
     lineLength = 0;
+    this.next();
   }
 
   public void newLineAndReturnСarriage() {
     newLine();
     print("\r");
+    this.next();
   }
 
   public void move(int row, int col) {

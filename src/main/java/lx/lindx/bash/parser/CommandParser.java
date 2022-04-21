@@ -24,9 +24,9 @@ public class CommandParser {
     return this.nextCommand;
   }
 
-  public Command nextCommand() {
+  public CommandExpression nextCommand() {
 
-    Command command = new Command();
+    CommandExpression command = new CommandExpression();
 
     for (String d : commandDelimiter) {
 
@@ -36,8 +36,8 @@ public class CommandParser {
 
       if (idx != -1) {
 
-        command = new Command(commandLine.substring(0, idx))
-            .setOperation(d);
+        command = new CommandExpression(commandLine.substring(0, idx))
+            .setLogicOperator(d);
 
         commandLine = commandLine.substring(idx + d.length());
         break;
@@ -45,16 +45,16 @@ public class CommandParser {
       } else if (idx == -1 && lineLength > 0
           && (commandLine.endsWith(dt) || commandLine.endsWith(d))) {
 
-        command = new Command(commandLine = commandLine.substring(0, (lineLength - dt.length())))
-            .setOperation(d);
+        command = new CommandExpression(commandLine = commandLine.substring(0, (lineLength - dt.length())))
+            .setLogicOperator(d);
 
         this.nextCommand = false;
         break;
 
       } else if (idx == -1 && lineLength > 0 && !commandLine.endsWith(dt)) {
 
-        command = new Command(commandLine)
-            .setOperation("");
+        command = new CommandExpression(commandLine)
+            .setLogicOperator("");
 
         this.nextCommand = false;
         break;

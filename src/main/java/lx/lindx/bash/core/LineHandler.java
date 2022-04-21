@@ -2,7 +2,7 @@ package lx.lindx.bash.core;
 
 import lx.lindx.bash.api.ChangeDirectory;
 import lx.lindx.bash.api.ListDirectory;
-import lx.lindx.bash.parser.Command;
+import lx.lindx.bash.parser.CommandExpression;
 import lx.lindx.bash.parser.CommandParser;
 import lx.lindx.bash.util.Util;
 import lx.lindx.bash.view.Buffer;
@@ -21,6 +21,8 @@ public class LineHandler {
   private PathParser pathParser;
   private CommandParser comParser;
 
+  private Executor exec;
+
   public LineHandler() {
 
     this.ls = new ListDirectory();
@@ -36,6 +38,8 @@ public class LineHandler {
     this.pathParser.setTerminalView(console);
 
     this.comParser = new CommandParser();
+
+    this.exec = new Executor(console, ps1);
   }
 
   public void insertElem(final char key) {
@@ -60,34 +64,51 @@ public class LineHandler {
 
   public void enter() {
 
-    if (buffer.toString().endsWith("\\")) {
+    int singleQuotes = buffer.getCountSymbol('\'') % 2;
+    int doubleQuotes = buffer.getCountSymbol('\"') % 2;
+
+    if (singleQuotes != 0 || doubleQuotes != 0) {
+
+      buffer.insertChar('\n');
+
+      console.setEdge(0);
+      console.newLineAndReturnСarriage();
+
+      console.print(">");
+      console.shiftCol(1);
+
+    } else if (singleQuotes == 0 && doubleQuotes == 0 && buffer.toString().endsWith("\\")) {
+
+      buffer.deletePrevChar();
 
       console.setEdge(1);
       console.newLineAndReturnСarriage();
-      buffer.deletePrevChar();
-      console.next();
+
       console.print(">");
       console.shiftCol(1);
 
     } else {
 
-      comParser.setCommandLine(buffer);
+      if (buffer.getSize() != 0) {
 
-      while (comParser.hasNextCommand()) {
+        comParser.setCommandLine(buffer);
 
-        Command command = new Executor(comParser.nextCommand()).make();
+        while (comParser.hasNextCommand()) {
 
-        System.out.println("[" + command + "][" + command.getOperation() + "]" + "["
-            + command.getState());
+          CommandExpression command = exec.make(comParser.nextCommand());
 
-        if (!command.getState())
-          break;
+          // System.out.println("[" + command.getCommand().substring(0, 4) +"][" +
+          // command.getOptions() + "][" + command.getStdOutFileName() + "]" + "["
+          // + command.getState());
+
+          if (!command.getState())
+            break;
+        }
       }
 
       console.setEdge(ps1.length() + 1);
       console.print("\n\r", ps1);
       console.newLine();
-
       buffer.dropBuffer();
     }
   }

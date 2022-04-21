@@ -27,7 +27,7 @@ public class Ps1 {
     userName = EnvironmentVariables.USER_NAME;
     compName = EnvironmentVariables.COMP_NAME;
 
-    workingDirectory = EnvironmentVariables.USER_HOME;
+    workingDirectory = EnvironmentVariables.USER_HOME; 
 
     setWorkingDirectory(workingDirectory);
 
@@ -41,7 +41,7 @@ public class Ps1 {
   public Ps1 setWorkingDirectory(final String workingDirectory) {
     this.workingDirectory = workingDirectory;
 
-    psx.format("%s@%s:%s%s%s$ ",
+    psx.format("%s@%s:%s%s%s$",
         userName,
         compName,
         fColor,

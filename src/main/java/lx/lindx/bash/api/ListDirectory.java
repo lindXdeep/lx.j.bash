@@ -3,6 +3,8 @@ package lx.lindx.bash.api;
 import java.nio.file.Path;
 import java.util.Set;
 
+import lx.lindx.bash.core.Ps1;
+import lx.lindx.bash.parser.CommandExpression;
 import lx.lindx.bash.sys.EnvironmentVariables;
 import lx.lindx.bash.term.Terminal;
 import lx.lindx.bash.util.DirectoryScanner;
@@ -10,7 +12,7 @@ import lx.lindx.bash.util.ItemFilter;
 import lx.lindx.bash.util.Util;
 import lx.lindx.bash.util.ItemFilter.Type;
 
-public class ListDirectory {
+public class ListDirectory extends ACommand {
 
   private final String sptr = EnvironmentVariables.FILE_SEPARATOR;
 
@@ -25,6 +27,7 @@ public class ListDirectory {
   private int itemCols;
 
   public ListDirectory() {
+    commandName = "ls";
     this.sysColumns = Terminal.getColumns();
     this.directoryScanner = new DirectoryScanner();
   }
@@ -76,5 +79,16 @@ public class ListDirectory {
 
   public int getNumRows() {
     return this.itemRows;
+  }
+
+  @Override
+  public String getName() {
+    return this.commandName;
+  }
+
+  @Override
+  public CommandExpression make() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

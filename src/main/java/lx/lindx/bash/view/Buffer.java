@@ -1,9 +1,12 @@
 package lx.lindx.bash.view;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.util.EscapeCharacter;
 
-public class Buffer {
+public class Buffer implements Iterable<Character> {
 
   private Console termView;
 
@@ -127,5 +130,38 @@ public class Buffer {
 
   public int getSize() {
     return this.bufSize;
+  }
+
+  @Override
+  public Iterator<Character> iterator() {
+    return new Iterator<Character>() {
+
+      private int idx = 0;
+
+      @Override
+      public boolean hasNext() {
+        return idx < buffer.length();
+      }
+
+      @Override
+      public Character next() {
+
+        if (hasNext())
+          return buffer.charAt(idx++);
+
+        throw new NoSuchElementException();
+      }
+    };
+  }
+
+  public int getCountSymbol(final char findChar) {
+
+    int countChar = 0;
+    char lastChar = 0;
+    for (char c : this) {
+      countChar = lastChar != '\\' && c == findChar ? countChar + 1 : countChar;
+      lastChar = c;
+    }
+    return countChar;
   }
 }
