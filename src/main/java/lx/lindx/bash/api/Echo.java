@@ -1,7 +1,5 @@
 package lx.lindx.bash.api;
 
-import java.util.Arrays;
-
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.parser.CommandExpression;
 import lx.lindx.bash.view.Console;
@@ -24,8 +22,6 @@ public class Echo extends ACommand {
     console.setEdge(0);
     console.newLine();
 
-    // console.newLineAndReturnСarriage();
-
     if (console.getRow() >= 25)
       System.out.println();
 
@@ -42,18 +38,26 @@ public class Echo extends ACommand {
         sb.append(s[2] = exp.toCharArray()[i]);
       }
 
-      for (BackslashEscapes b : BackslashEscapes.values()) {
-
-        if (exp.getOptions().contains("e") && s[0] == '\\' && s[1] == '\\' && String.valueOf(s[2]).equals(b.name())) {
+      for (char[] b : backslashEscapes) {
+        if (exp.getOptions().contains("e") && s[0] == '\\' && s[1] == '\\' && s[2] == b[0]) {
           sb.delete(sb.length() - 3, sb.length());
-          sb.append(b.getEscape());
+          sb.append(b[1]);
+        } else if (s[0] != '\\' && s[1] == '\\' && s[2] == b[0]) { // default
+          sb.deleteCharAt(sb.length() - 2);
         }
+      }
+
+      if (s[0] != '\\' && s[1] != '\\' && (s[2] == '\'' || s[2] == '\"')) { // default
+        sb.deleteCharAt(sb.length() - 1);
       }
     }
 
-    char[] sd = sb.toString().toCharArray();
+    if (!exp.getOptions().contains("n")) {
+      exp.update(sb.append('\n').toString());
+    }
 
-    for (char c : sd) {
+    for (char c : sb.toString().toCharArray()) {
+
       console.print(c);
 
       if (c == '\n') {
@@ -62,51 +66,7 @@ public class Echo extends ACommand {
       }
     }
 
-    // System.out.println("1:" + exp.getOptions());
-    // System.out.println("2:" + exp.getCommand());
-
-    // echo asdsa . asd > sadf >> asdads
-
-    // -sdf sdfsdf > sdf > sdf > sdf -asd sdfdsf
-
-    // sdf
-
-    // setStdOutFile(this.exp);
-    // setOptions(this.exp);
-
-    // String opt = exp.getOptions();
-    // String arg = exp.getCommand().substring(commandName.length()).trim();
-
-    // int o = 0;
-    // char ch = 0;
-
-    // if (opt.isEmpty()) {
-    // console.newLineAndReturnСarriage();
-    // }
-
-    // while (opt.length() >= 1 && o++ < opt.length() - 1 && (ch = opt.charAt(o++))
-    // != -1) {
-
-    // if (ch == 'n') {
-    // console.shiftRow(-1);
-    // console.next();
-    // } else if (ch == 'e') {
-    // // TODO: enable interpretation of backslash escapes
-    // } else {
-    // // nothing
-    // }
-    // }
-
-    // if (exp.getStdOutFileName().length() != 0) {
-    // stdOutToFile(arg, exp.getStdOutFileName());
-    // } else {
-    // console.print(arg);
-    // }
-
-    // exp.setState(true);
-
     return this.exp;
-
   }
 
   @Override
@@ -123,24 +83,4 @@ public class Echo extends ACommand {
       }
     }
   }
-
-  // @Override
-  // public void setOptions(CommandExpression exp) {
-
-  // String s2 = "";
-  // while ((s2 =
-  // exp.getCommand().substring(commandName.length()).trim()).startsWith("-")) {
-
-  // String sOpt = s2.substring(1, s2.indexOf(' ') != -1 ? s2.indexOf(' ') :
-  // s2.length());
-
-  // for (String o : options)
-  // if (sOpt.contains(o))
-  // exp.addOption(o);
-
-  // exp.update(commandName.concat(" ").concat(s2.substring(sOpt.length() +
-  // 1).trim()));
-  // }
-  // }
-
 }

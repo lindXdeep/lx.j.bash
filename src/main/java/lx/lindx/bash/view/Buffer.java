@@ -132,6 +132,10 @@ public class Buffer implements Iterable<Character> {
     return this.bufSize;
   }
 
+  public boolean endsWith(final String str) {
+    return this.toString().endsWith(str);
+  }
+
   @Override
   public Iterator<Character> iterator() {
     return new Iterator<Character>() {

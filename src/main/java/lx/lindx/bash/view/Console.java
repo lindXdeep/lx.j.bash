@@ -82,10 +82,11 @@ public class Console {
     this.next();
   }
 
-  public void newLineAndReturnСarriage() {
-    newLine();
-    print("\r");
-    this.next();
+  public void addAtUnfinishedLine() {
+    this.setEdge(0);
+    this.newLine();
+    this.print("\r>");
+    this.shiftCol(1);
   }
 
   public void move(int row, int col) {

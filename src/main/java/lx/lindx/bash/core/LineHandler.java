@@ -70,24 +70,16 @@ public class LineHandler {
     if (singleQuotes != 0 || doubleQuotes != 0) {
 
       buffer.insertChar('\n');
+      console.addAtUnfinishedLine();
 
-      console.setEdge(0);
-      console.newLineAndReturnСarriage();
-
-      console.print(">");
-      console.shiftCol(1);
-
-    } else if (singleQuotes == 0 && doubleQuotes == 0 && buffer.toString().endsWith("\\")) {
+    } else if (singleQuotes == 0 && doubleQuotes == 0 && buffer.endsWith("\\")) {
 
       buffer.deletePrevChar();
-
-      console.setEdge(1);
-      console.newLineAndReturnСarriage();
-
-      console.print(">");
-      console.shiftCol(1);
+      console.addAtUnfinishedLine();
 
     } else {
+
+      CommandExpression command = null;
 
       if (buffer.getSize() != 0) {
 
@@ -95,8 +87,7 @@ public class LineHandler {
 
         while (comParser.hasNextCommand()) {
 
-          CommandExpression command = exec.make(comParser.nextCommand());
-
+          command = exec.make(comParser.nextCommand());
           // System.out.println("[" + command.getCommand().substring(0, 4) +"][" +
           // command.getOptions() + "][" + command.getStdOutFileName() + "]" + "["
           // + command.getState());
@@ -106,8 +97,9 @@ public class LineHandler {
         }
       }
 
+      console.print("\n\r");
       console.setEdge(ps1.length() + 1);
-      console.print("\n\r", ps1);
+      console.print(ps1);
       console.newLine();
       buffer.dropBuffer();
     }

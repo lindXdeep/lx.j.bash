@@ -1,16 +1,9 @@
 package lx.lindx.bash.api;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.parser.CommandExpression;
-import lx.lindx.bash.util.EscapeCharacter;
 import lx.lindx.bash.view.Console;
 
 abstract class ACommand implements Api {
@@ -18,25 +11,16 @@ abstract class ACommand implements Api {
   protected String commandName;
   protected String[] options;
 
-  protected enum BackslashEscapes {
-
-    
-    b('\b'),
-    f('\f'),
-    t('\t'),
-    n('\n'),
-    r('\r');
-
-    private final Character ch;
-
-    BackslashEscapes(final Character ch) {
-      this.ch = ch;
-    }
-
-    public Character getEscape() {
-      return this.ch;
-    }
-  }
+  protected char[][] backslashEscapes = {
+      { 'b', '\b' },
+      { 'f', '\f' },
+      { 't', '\t' },
+      { 'n', '\n' },
+      { 'r', '\r' },
+      { '\\', '\\' },
+      { '\"', '\"' },
+      { '\'', '\'' }
+  };
 
   protected boolean stdOutAddToEndFile;
 
