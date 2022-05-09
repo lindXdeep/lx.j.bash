@@ -18,6 +18,7 @@ public class Echo extends ACommand {
   public CommandExpression make() {
 
     setOptions(exp);
+    setStdOutFile(exp);
 
     console.setEdge(0);
     console.newLine();
@@ -25,47 +26,18 @@ public class Echo extends ACommand {
     if (console.getRow() >= 25)
       System.out.println();
 
-    StringBuilder sb = new StringBuilder();
-    char[] s = new char[3];
+    if (exp.length() >= 2) {
 
-    for (int i = 0; i < exp.length(); i++) {
+      for (char c : exp) {
 
-      if (i <= 2) {
-        sb.append(s[i] = exp.toCharArray()[i]);
-      } else {
-        s[0] = s[1];
-        s[1] = s[2];
-        sb.append(s[2] = exp.toCharArray()[i]);
+        console.print(c);
+
       }
 
-      for (char[] b : backslashEscapes) {
-        if (exp.getOptions().contains("e") && s[0] == '\\' && s[1] == '\\' && s[2] == b[0]) {
-          sb.delete(sb.length() - 3, sb.length());
-          sb.append(b[1]);
-        } else if (s[0] != '\\' && s[1] == '\\' && s[2] == b[0]) { // default
-          sb.deleteCharAt(sb.length() - 2);
-        }
-      }
-
-      if (s[0] != '\\' && s[1] != '\\' && (s[2] == '\'' || s[2] == '\"')) { // default
-        sb.deleteCharAt(sb.length() - 1);
-      }
+    } else {
+      console.print(exp);
     }
-
-    if (!exp.getOptions().contains("n")) {
-      exp.update(sb.append('\n').toString());
-    }
-
-    for (char c : sb.toString().toCharArray()) {
-
-      console.print(c);
-
-      if (c == '\n') {
-        console.print("\r");
-        console.shiftRow(1);
-      }
-    }
-
+    exp.setState(true);
     return this.exp;
   }
 

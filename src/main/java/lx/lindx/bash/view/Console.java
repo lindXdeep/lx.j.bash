@@ -4,8 +4,6 @@ import static lx.lindx.bash.sys.TerminalSequences.CLS;
 import static lx.lindx.bash.sys.TerminalSequences.CURR_UP_LEFT;
 import static lx.lindx.bash.sys.TerminalSequences.MOV_CURR_R_C;
 
-import javax.swing.tree.RowMapper;
-
 import lx.lindx.bash.core.Ps1;
 import lx.lindx.bash.term.Terminal;
 
@@ -83,10 +81,12 @@ public class Console {
   }
 
   public void addAtUnfinishedLine() {
+
+   
     this.setEdge(0);
     this.newLine();
-    this.print("\r>");
-    this.shiftCol(1);
+    this.print("\r> ");
+    this.shiftCol(2);
   }
 
   public void move(int row, int col) {

@@ -140,7 +140,7 @@ public class Buffer implements Iterable<Character> {
   public Iterator<Character> iterator() {
     return new Iterator<Character>() {
 
-      private int idx = 0;
+      int idx = 0;
 
       @Override
       public boolean hasNext() {
@@ -158,14 +158,25 @@ public class Buffer implements Iterable<Character> {
     };
   }
 
-  public int getCountSymbol(final char findChar) {
+  // TODO:delete
+  // public int getCountSymbol(final char findChar) {
 
-    int countChar = 0;
-    char lastChar = 0;
-    for (char c : this) {
-      countChar = lastChar != '\\' && c == findChar ? countChar + 1 : countChar;
-      lastChar = c;
-    }
-    return countChar;
+  //   int countChar = 0;
+  //   char lastChar = 0;
+  //   for (char c : this) {
+  //     countChar = lastChar != '\\' && c == findChar ? countChar + 1 : countChar;
+  //     lastChar = c;
+  //   }
+  //   return countChar;
+  // }
+
+  public void update(final StringBuilder buffer) {
+    update(buffer.toString());
+  }
+
+  public void update(final String buffer) {
+    this.dropBuffer();
+    this.buffer.append(buffer);
+    this.bufSize = bufPos = buffer.length();
   }
 }

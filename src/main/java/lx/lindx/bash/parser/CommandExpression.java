@@ -82,7 +82,6 @@ public class CommandExpression implements Iterable<Character> {
 
   @Override
   public Iterator<Character> iterator() {
-
     return new Iterator<Character>() {
 
       int idx = 0;

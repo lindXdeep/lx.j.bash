@@ -1,5 +1,7 @@
 package lx.lindx.bash.core;
 
+import java.util.Iterator;
+
 import lx.lindx.bash.api.ChangeDirectory;
 import lx.lindx.bash.api.ListDirectory;
 import lx.lindx.bash.parser.CommandExpression;
@@ -64,15 +66,61 @@ public class LineHandler {
 
   public void enter() {
 
-    int singleQuotes = buffer.getCountSymbol('\'') % 2;
-    int doubleQuotes = buffer.getCountSymbol('\"') % 2;
+    char lastchar = 0;
+    boolean openDoubleQuotes = false;
+    boolean openSingeQuotes = false;
+    StringBuilder tmpBuffer = new StringBuilder();
 
-    if (singleQuotes != 0 || doubleQuotes != 0) {
+    Iterator iter = buffer.iterator();
+
+    while (iter.hasNext()) {
+
+      char c = (Character) iter.next();
+
+      if (!openSingeQuotes && !openDoubleQuotes && (lastchar == '\\' & c == '\'')) {
+        openSingeQuotes = false;
+      } else if (!openDoubleQuotes /* && lastchar != '\\' */ && c == '\'') {
+        openSingeQuotes = !openSingeQuotes ? true : false;
+      } else if (!openSingeQuotes && lastchar != '\\' && c == '\"') {
+        openDoubleQuotes = !openDoubleQuotes ? true : false;
+      }
+
+      if (lastchar == '\\' && (c != '&' & c != '|' & c != '>')) {
+
+        if (!openSingeQuotes && !openDoubleQuotes) {
+
+          tmpBuffer.setLength(tmpBuffer.length() - 1);
+
+          if (c == '\\' || c == '\'' || c == '\"') {
+            tmpBuffer.append(c);
+            lastchar = iter.hasNext() ? (Character) iter.next() : lastchar;
+            tmpBuffer.append(lastchar);
+            continue;
+          }
+        }
+
+        if (openDoubleQuotes && c == '\\') {
+          lastchar = iter.hasNext() ? (Character) iter.next() : lastchar;
+          tmpBuffer.append(lastchar);
+          continue;
+        }
+      }
+
+      tmpBuffer.append(lastchar = c);
+    }
+
+    this.buffer.update(tmpBuffer);
+
+    if (openSingeQuotes || openDoubleQuotes) {
 
       buffer.insertChar('\n');
       console.addAtUnfinishedLine();
 
-    } else if (singleQuotes == 0 && doubleQuotes == 0 && buffer.endsWith("\\")) {
+    } else if (!openSingeQuotes && !openDoubleQuotes &&
+        (buffer.endsWith("\\") & !buffer.endsWith("\\\\"))) {
+
+      if (console.getRow() >= 25)
+        System.out.println();
 
       buffer.deletePrevChar();
       console.addAtUnfinishedLine();
@@ -88,6 +136,7 @@ public class LineHandler {
         while (comParser.hasNextCommand()) {
 
           command = exec.make(comParser.nextCommand());
+
           // System.out.println("[" + command.getCommand().substring(0, 4) +"][" +
           // command.getOptions() + "][" + command.getStdOutFileName() + "]" + "["
           // + command.getState());
@@ -152,4 +201,110 @@ public class LineHandler {
         console.toEnd(),
         console.getSysCol());
   }
+
+  /**
+   * @return Console return the console
+   */
+  public Console getConsole() {
+    return console;
+  }
+
+  /**
+   * @param console the console to set
+   */
+  public void setConsole(Console console) {
+    this.console = console;
+  }
+
+  /**
+   * @return Buffer return the buffer
+   */
+  public Buffer getBuffer() {
+    return buffer;
+  }
+
+  /**
+   * @param buffer the buffer to set
+   */
+  public void setBuffer(Buffer buffer) {
+    this.buffer = buffer;
+  }
+
+  /**
+   * @return Ps1 return the ps1
+   */
+  public Ps1 getPs1() {
+    return ps1;
+  }
+
+  /**
+   * @return ListDirectory return the ls
+   */
+  public ListDirectory getLs() {
+    return ls;
+  }
+
+  /**
+   * @param ls the ls to set
+   */
+  public void setLs(ListDirectory ls) {
+    this.ls = ls;
+  }
+
+  /**
+   * @return ChangeDirectory return the cd
+   */
+  public ChangeDirectory getCd() {
+    return cd;
+  }
+
+  /**
+   * @param cd the cd to set
+   */
+  public void setCd(ChangeDirectory cd) {
+    this.cd = cd;
+  }
+
+  /**
+   * @return PathParser return the pathParser
+   */
+  public PathParser getPathParser() {
+    return pathParser;
+  }
+
+  /**
+   * @param pathParser the pathParser to set
+   */
+  public void setPathParser(PathParser pathParser) {
+    this.pathParser = pathParser;
+  }
+
+  /**
+   * @return CommandParser return the comParser
+   */
+  public CommandParser getComParser() {
+    return comParser;
+  }
+
+  /**
+   * @param comParser the comParser to set
+   */
+  public void setComParser(CommandParser comParser) {
+    this.comParser = comParser;
+  }
+
+  /**
+   * @return Executor return the exec
+   */
+  public Executor getExec() {
+    return exec;
+  }
+
+  /**
+   * @param exec the exec to set
+   */
+  public void setExec(Executor exec) {
+    this.exec = exec;
+  }
+
 }

@@ -52,13 +52,7 @@ abstract class ACommand implements Api {
 
   public void setStdOutFile(CommandExpression exp) {
 
-    String str_exp = exp.getCommand();
-
-    if (str_exp.split(" > ").length > 1 || str_exp.split(" >> ").length > 1) {
-
-    } else {
-      // если нет вывода в файли тогда на экран
-    }
+    // String str_exp = exp.getCommand();
 
     // echo asdasd >> asd -d sad > asaS ; > ASD > sdasd -d;
 
